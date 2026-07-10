@@ -1,0 +1,2057 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecirculaLima - Transforma tus residuos en beneficios</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@700;800&family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+
+:root{
+    --primary-dark:#34472C;--accent-green:#2F531F;--brand-light:#B3F598;
+    --pure-white:#FFFFFF;--dark-bg:#1A2218;--slate-text:#475569;
+    --light-gray:#F8FAFC;--border-split:#E2E8F0;
+    --font-heading:'League Spartan',sans-serif;--font-body:'Ubuntu',sans-serif;
+    --error-red:#DC2626;--success-green:#16A34A;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--font-body);font-size:16px;color:#0F172A;background:var(--pure-white);line-height:1.6;}
+h1,h2,h3,h4{font-family:var(--font-heading);color:var(--primary-dark);font-weight:800;}
+.hidden{display:none!important;}
+a{text-decoration:none;}
+
+.navbar{position:sticky;top:0;background:var(--pure-white);border-bottom:1px solid var(--border-split);z-index:1000;padding:14px 0;}
+.navbar-container{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 20px;gap:12px;}
+.logo-area{display:flex;align-items:center;gap:10px;flex-shrink:0;cursor:pointer;}
+.brand-logo-img{width:36px;height:36px;border-radius:50%;object-fit:cover;}
+.brand-name{font-family:var(--font-heading);font-size:20px;color:var(--primary-dark);}
+.nav-links{display:flex;align-items:center;}
+.nav-links a{color:var(--slate-text);font-size:14px;margin:0 10px;font-weight:500;transition:color .2s;padding:4px 0;border-bottom:2px solid transparent;}
+.nav-links a:hover,.nav-links a.active-link{color:var(--primary-dark);border-bottom-color:var(--primary-dark);}
+.auth-btn-group{display:flex;gap:8px;align-items:center;flex-shrink:0;}
+.btn-login-trigger{background:transparent;color:var(--primary-dark);border:2px solid var(--primary-dark);padding:8px 14px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;transition:background .2s,color .2s;font-family:inherit;}
+.btn-login-trigger:hover{background:var(--primary-dark);color:#fff;}
+.btn-register-trigger{background:var(--primary-dark);color:#fff;border:2px solid var(--primary-dark);padding:8px 14px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;transition:background .2s;font-family:inherit;}
+.btn-register-trigger:hover{background:var(--accent-green);border-color:var(--accent-green);}
+.hamburger-btn{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:4px;flex-shrink:0;}
+.hamburger-btn span{display:block;width:24px;height:2px;background:var(--primary-dark);border-radius:2px;transition:.3s;}
+.hamburger-btn.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger-btn.open span:nth-child(2){opacity:0;}
+.hamburger-btn.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.mobile-nav-drawer{display:none;background:var(--pure-white);border-top:1px solid var(--border-split);padding:16px 20px;flex-direction:column;gap:0;box-shadow:0 8px 24px rgba(0,0,0,.1);position:relative;z-index:999;}
+.mobile-nav-drawer a{color:var(--slate-text);font-size:15px;font-weight:500;padding:13px 0;border-bottom:1px solid var(--border-split);display:block;transition:color .2s;}
+.mobile-nav-drawer a:last-of-type{border-bottom:none;}
+.mobile-nav-drawer a:hover{color:var(--primary-dark);}
+.mob-btn{background:var(--primary-dark);color:#fff;border:none;padding:13px;font-size:15px;font-weight:700;border-radius:8px;cursor:pointer;width:100%;margin-top:12px;font-family:inherit;text-align:center;transition:background .2s;}
+.mob-btn:hover{background:var(--accent-green);}
+.mobile-nav-drawer.open{display:flex;}
+.session-active-badge{display:flex;align-items:center;gap:10px;background:#F1F5F9;padding:6px 12px;border-radius:20px;}
+.session-user-info{font-size:12px;font-weight:700;color:var(--accent-green);}
+.btn-session-logout{background:#EF4444;color:#fff;border:none;padding:4px 10px;font-size:11px;font-weight:700;border-radius:4px;cursor:pointer;transition:background .2s;}
+.btn-session-logout:hover{background:#B91C1C;}
+
+.hero-section{background:var(--primary-dark);color:#fff;padding:80px 20px;}
+.hero-container{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:40px;align-items:center;}
+.mockup-wrapper{background:rgba(255,255,255,.07);padding:12px;border-radius:26px;border:1px solid rgba(255,255,255,.12);display:inline-flex;}
+.phone-screen-mock{background:var(--dark-bg);width:250px;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px;border:4px solid var(--primary-dark);}
+.mock-header{font-size:11px;color:#A0B09A;text-align:center;}
+.mock-balance-card{background:#fff;padding:14px;border-radius:10px;color:var(--primary-dark);}
+.mock-lbl{font-size:16px;font-weight:800;display:block;}
+.mock-sub-lbl{font-size:11px;color:var(--slate-text);}
+.mock-progress-bar{background:#E2E8F0;height:6px;border-radius:4px;margin-top:8px;overflow:hidden;}
+.progress-fill{background:var(--accent-green);height:100%;width:40%;transition:width .6s ease;}
+.mock-map-placeholder{background:var(--primary-dark);height:130px;border-radius:10px;position:relative;overflow:hidden;}
+.map-pin{position:absolute;background:#EF4444;width:10px;height:10px;border-radius:50%;top:40%;left:50%;}
+.map-pin::after{content:'';position:absolute;top:-4px;left:-4px;width:18px;height:18px;border-radius:50%;background:rgba(239,68,68,.3);animation:pulse 1.5s infinite;}
+.map-pin.user{background:var(--brand-light);top:60%;left:30%;}
+.map-pin.user::after{background:rgba(179,245,152,.3);}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.5);opacity:.5;}}
+.mock-btn-action{background:var(--primary-dark);color:#fff;border:none;padding:9px;border-radius:6px;font-size:11px;font-weight:700;width:100%;cursor:pointer;transition:background .2s;}
+.mock-btn-action:hover{background:var(--accent-green);}
+.hero-tagline{color:var(--brand-light);font-size:11px;letter-spacing:1px;font-weight:800;display:block;margin-bottom:10px;}
+.hero-main-title{font-size:36px;color:#fff;margin-bottom:16px;line-height:1.1;}
+.hero-main-title span{color:var(--brand-light);}
+.hero-paragraph{color:#D1D5DB;font-size:15px;margin-bottom:20px;}
+.hero-download-buttons{display:flex;gap:12px;margin-bottom:18px;flex-wrap:wrap;}
+.hero-bullets-checks{display:flex;gap:14px;font-size:13px;color:#A0B09A;flex-wrap:wrap;}
+.btn-store{background:var(--primary-dark);color:#fff;padding:10px 20px;border-radius:50px;border:none;font-family:var(--font-body);font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:13px;transition:transform .2s,background .2s;}
+.btn-store:hover{transform:scale(1.05);background:var(--accent-green);}
+.btn-store:active{transform:scale(.98);}
+
+.section-mini-tag{font-size:12px;font-weight:800;color:var(--accent-green);letter-spacing:.5px;display:block;}
+.section-title-md{font-size:28px;margin:6px 0 14px;}
+.section-desc-txt{color:var(--slate-text);font-size:14px;max-width:800px;margin-bottom:32px;}
+
+.metrics-section{background:var(--light-gray);padding:80px 20px;border-top:1px solid var(--border-split);}
+.metrics-container{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:40px;}
+.grid-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px;}
+.stat-box{padding:22px;border-radius:12px;transition:transform .2s;}
+.stat-box:hover{transform:translateY(-3px);}
+.stat-box h3{font-size:32px;margin-bottom:6px;}
+.stat-box.dark-box{background:var(--primary-dark);color:#fff;}
+.stat-box.dark-box h3{color:var(--brand-light);}
+.stat-box.white-box{background:#fff;border:1px solid var(--border-split);}
+.metrics-right-text{display:flex;flex-direction:column;justify-content:center;gap:14px;}
+.metrics-right-text h3{font-size:18px;line-height:1.3;}
+.metrics-right-text p{font-size:14px;color:var(--slate-text);}
+.source-caption{font-size:11px;color:#94A3B8;font-style:italic;}
+
+.recycler-segment-section{max-width:1200px;margin:0 auto;padding:80px 20px;}
+.recycler-container{display:grid;grid-template-columns:1.3fr 1fr;gap:50px;align-items:center;}
+.feature-rows-list{display:flex;flex-direction:column;gap:18px;margin-top:24px;}
+.feature-row-item{display:flex;gap:14px;padding:12px;border-radius:8px;transition:background .2s;}
+.feature-row-item:hover{background:#F8FAFC;}
+.row-icon{font-size:18px;background:#F1F5F9;width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.feature-row-item h4{font-size:14px;color:var(--primary-dark);margin-bottom:3px;}
+.feature-row-item p{font-size:13px;color:var(--slate-text);}
+.dark-mock{background:var(--dark-bg)!important;color:#fff;}
+.mock-user-top{font-size:12px;font-weight:700;color:#fff;}
+.mock-status-tag{background:rgba(255,255,255,.1);font-size:10px;padding:3px 7px;border-radius:4px;display:inline-block;}
+.mock-double-stat{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.mock-double-stat div{background:rgba(255,255,255,.05);padding:9px;border-radius:7px;}
+.mock-double-stat strong{font-size:18px;display:block;}
+.mock-double-stat small{font-size:10px;color:#94A3B8;}
+.mock-meta-box{background:rgba(255,255,255,.05);padding:10px;border-radius:7px;font-size:11px;}
+.mock-address-box{background:#fff;color:#000;padding:10px;border-radius:7px;font-size:11px;}
+.mock-address-box h5{font-size:12px;}
+.bg-green{background:var(--primary-dark)!important;color:#fff;}
+
+.about-section{background:#fff;padding:60px 20px;border-top:1px solid var(--border-split);text-align:center;}
+.center-title{font-size:28px;margin-bottom:8px;}
+.center-subtitle{font-size:14px;color:var(--slate-text);margin-bottom:30px;max-width:580px;margin-left:auto;margin-right:auto;}
+.about-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.about-card{background:#fff;border:1px solid var(--border-split);padding:24px;border-radius:12px;text-align:center;transition:transform .2s,box-shadow .2s;}
+.about-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(52,71,44,.1);}
+.about-icon{font-size:24px;margin-bottom:12px;}
+.about-card h4{font-size:14px;margin-bottom:8px;color:var(--primary-dark);}
+.about-card p{font-size:13px;color:var(--slate-text);}
+
+.rewards-section{max-width:1200px;margin:0 auto;padding:80px 20px;}
+.cards-grid-layout{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.info-feature-card{border:1px solid var(--border-split);border-radius:12px;padding:22px;display:flex;flex-direction:column;align-items:flex-start;transition:transform .2s,box-shadow .2s;}
+.info-feature-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(52,71,44,.08);}
+.info-feature-card.item-highlighted{border:2px solid var(--primary-dark);}
+.card-icon-bubble{font-size:20px;background:#F1F5F9;width:44px;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.info-feature-card h3{font-size:16px;margin-bottom:10px;color:var(--primary-dark);}
+.info-feature-card p{font-size:13px;color:var(--slate-text);margin-bottom:18px;flex-grow:1;}
+.btn-card-action,.btn-card-action-secondary{border:2px solid var(--primary-dark);padding:8px 18px;font-size:12px;font-weight:700;border-radius:20px;cursor:pointer;transition:background .2s,color .2s,transform .15s;font-family:inherit;}
+.btn-card-action{background:var(--primary-dark);color:#fff;}
+.btn-card-action:hover{background:var(--accent-green);border-color:var(--accent-green);}
+.btn-card-action:active{transform:scale(.97);}
+.btn-card-action-secondary{background:transparent;color:var(--primary-dark);}
+.btn-card-action-secondary:hover{background:var(--primary-dark);color:#fff;transform:scale(1.03);}
+.btn-card-action-secondary:active{transform:scale(.97);}
+.wallet-info-box{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #86efac;border-radius:12px;padding:20px 24px;margin-top:28px;display:flex;align-items:flex-start;gap:16px;}
+.wallet-icon-big{font-size:30px;flex-shrink:0;}
+.wallet-info-box h4{font-size:15px;color:var(--accent-green);margin-bottom:6px;}
+.wallet-info-box p{font-size:13px;color:var(--slate-text);}
+
+.inclusive-section{background:#FCFDFE;padding:60px 20px;border-top:1px solid var(--border-split);text-align:center;}
+.inclusive-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.inclusive-card{background:#fff;border:1px solid var(--border-split);padding:22px;border-radius:12px;text-align:center;transition:transform .2s;}
+.inclusive-card:hover{transform:translateY(-3px);}
+.inclusive-icon{font-size:24px;margin-bottom:12px;}
+.inclusive-card h4{font-size:14px;margin-bottom:8px;color:var(--primary-dark);}
+.inclusive-card p{font-size:13px;color:var(--slate-text);}
+
+.cta-bottom-section{background:var(--dark-bg);color:#fff;text-align:center;padding:80px 20px;}
+.cta-pre{font-size:12px;color:var(--brand-light);font-weight:800;display:block;margin-bottom:8px;}
+.cta-bottom-section h2{color:#fff;font-size:28px;margin-bottom:12px;}
+.cta-bottom-section p{color:#D1D5DB;font-size:14px;margin-bottom:22px;}
+.center-flex{justify-content:center;}
+.white-btn{background:#fff!important;color:#000!important;}
+.white-btn:hover{background:#f0fdf4!important;}
+.transparent-btn{background:transparent!important;border:2px solid rgba(255,255,255,.4)!important;color:#fff!important;}
+.transparent-btn:hover{background:rgba(255,255,255,.1)!important;}
+.recycler-link-footer{color:#D1D5DB;font-size:13px;display:block;margin-top:20px;}
+.link-green{color:var(--brand-light);text-decoration:underline;cursor:pointer;background:none;border:none;font-size:13px;font-family:inherit;transition:opacity .2s;}
+.link-green:hover{opacity:.8;}
+
+.main-footer{background:#000;color:#64748B;text-align:center;padding:24px 20px;font-size:13px;}
+.footer-links{margin-bottom:10px;display:flex;justify-content:center;flex-wrap:wrap;gap:8px;align-items:center;}
+.footer-links a{color:#64748B;transition:color .2s;}
+.footer-links a:hover{color:var(--brand-light);}
+.footer-links span{color:#374151;}
+.footer-copyright{color:#4B5563;font-size:12px;}
+
+.toast{position:fixed;bottom:28px;right:28px;background:var(--primary-dark);color:#fff;padding:14px 20px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.25);z-index:9999;opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s;pointer-events:none;max-width:320px;}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.success{border-left:4px solid var(--brand-light);}
+.toast.info{border-left:4px solid #60A5FA;}
+.toast.warning{border-left:4px solid #FCD34D;}
+
+.modal-shadow-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(26,34,24,.85);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:2000;padding:16px;}
+.close-modal-btn{position:absolute;top:12px;right:16px;background:none;border:none;font-size:26px;color:#94A3B8;cursor:pointer;line-height:1;transition:color .2s;}
+.close-modal-btn:hover{color:var(--primary-dark);}
+
+.figma-auth-container{background:#fff;border-radius:14px;width:100%;max-width:860px;display:grid;grid-template-columns:1fr 1.3fr;position:relative;box-shadow:0 20px 50px rgba(0,0,0,.25);border-top:5px solid var(--primary-dark);overflow:hidden;}
+.auth-brand-sidebar{background:#F8FAFC;padding:40px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid var(--border-split);}
+.sidebar-logo{width:52px;height:52px;border-radius:50%;margin-bottom:14px;object-fit:cover;}
+.sidebar-pre{font-size:11px;font-weight:800;color:var(--accent-green);}
+.sidebar-heading{font-size:24px;margin:4px 0 12px;color:var(--primary-dark);}
+.sidebar-paragraph{font-size:13px;color:var(--slate-text);}
+.auth-form-workspace{padding:32px;display:flex;flex-direction:column;overflow-y:auto;max-height:92vh;}
+.auth-mode-tabs{display:flex;border:2px solid var(--border-split);border-radius:8px;overflow:hidden;margin-bottom:16px;}
+.auth-mode-tab{flex:1;background:transparent;border:none;padding:10px;font-size:13px;font-weight:700;color:var(--slate-text);cursor:pointer;transition:background .2s,color .2s;font-family:inherit;}
+.auth-mode-tab.active{background:var(--primary-dark);color:#fff;}
+.role-tabs-selector{display:grid;grid-template-columns:repeat(3,1fr);background:#F1F5F9;padding:4px;border-radius:8px;margin-bottom:14px;}
+.tab-selector-item{background:transparent;border:none;padding:8px 4px;font-size:12px;font-weight:700;color:var(--slate-text);cursor:pointer;border-radius:6px;font-family:inherit;transition:background .2s,color .2s;}
+.tab-selector-item.active{background:var(--primary-dark);color:#fff;}
+.context-info-banner{background:rgba(179,245,152,.12);border:1px solid var(--brand-light);padding:12px;border-radius:6px;margin-bottom:14px;}
+.context-info-banner h4{font-size:13px;color:var(--accent-green);}
+.context-info-banner p{font-size:12px;color:var(--slate-text);margin-top:2px;}
+.auth-core-form{display:flex;flex-direction:column;gap:11px;text-align:left;}
+.form-double-row{display:flex;gap:10px;}
+.flex-item{flex:1;}
+.form-input-group{display:flex;flex-direction:column;gap:4px;}
+.form-input-group label{font-size:11px;font-weight:700;color:var(--primary-dark);}
+.form-input-group input,.form-input-group select{padding:9px 11px;border:1px solid var(--border-split);border-radius:6px;font-size:13px;background:#FAFAFA;font-family:inherit;transition:border-color .2s;width:100%;}
+.form-input-group input:focus,.form-input-group select:focus{outline:none;border-color:var(--accent-green);background:#fff;}
+.form-input-group input.error-field{border-color:var(--error-red);}
+.form-input-group input.ok-field{border-color:var(--success-green);}
+.field-error-msg{font-size:11px;color:var(--error-red);margin-top:1px;display:none;}
+.field-error-msg.visible{display:block;}
+.btn-submit-auth{background:var(--primary-dark);color:#fff;border:none;padding:12px;font-size:13px;font-weight:700;border-radius:6px;cursor:pointer;font-family:inherit;transition:background .2s;margin-top:4px;}
+.btn-submit-auth:hover{background:var(--accent-green);}
+.auth-switch-text{font-size:12px;color:var(--slate-text);text-align:center;margin-top:8px;}
+.auth-switch-text button{background:none;border:none;color:var(--accent-green);font-weight:700;cursor:pointer;font-size:12px;text-decoration:underline;font-family:inherit;}
+.forgot-link{font-size:12px;color:var(--accent-green);cursor:pointer;background:none;border:none;font-family:inherit;text-decoration:underline;align-self:flex-end;}
+.remember-row{display:flex;align-items:center;gap:8px;}
+.remember-row label{font-size:12px;color:var(--slate-text);font-weight:400;cursor:pointer;}
+input[type="checkbox"]{width:auto!important;cursor:pointer;accent-color:var(--accent-green);}
+.extra-fields-section{display:flex;flex-direction:column;gap:11px;}
+
+.qr-interactive-card{background:#fff;border-radius:14px;padding:28px;width:90%;max-width:380px;text-align:center;position:relative;}
+.qr-interactive-card h3{font-size:18px;color:var(--primary-dark);margin-bottom:4px;}
+.qr-subtitle{font-size:13px;color:var(--slate-text);margin-bottom:14px;}
+.qr-explanation-note{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:12px;margin-bottom:14px;font-size:12px;color:#92400e;text-align:left;}
+.qr-explanation-note strong{display:block;margin-bottom:4px;}
+.qr-render-zone{background:#F1F5F9;padding:14px;border-radius:12px;display:inline-block;margin-bottom:12px;}
+#qr-code-display{display:flex;justify-content:center;padding:6px;}
+.qr-metadata{font-size:12px;margin-bottom:14px;background:#F8FAFC;padding:7px;border-radius:4px;}
+.btn-refresh-qr{background:var(--accent-green);color:#fff;border:none;padding:10px 20px;font-size:13px;font-weight:700;border-radius:6px;cursor:pointer;font-family:inherit;transition:background .2s;}
+.btn-refresh-qr:hover{background:var(--primary-dark);}
+
+.page-modal-container{background:#fff;border-radius:14px;width:95%;max-width:620px;padding:36px;position:relative;max-height:88vh;overflow-y:auto;}
+.page-modal-container h2{font-size:20px;margin-bottom:14px;color:var(--primary-dark);}
+.page-modal-container p{font-size:13px;color:var(--slate-text);margin-bottom:10px;line-height:1.7;}
+.page-modal-container h4{font-size:14px;color:var(--primary-dark);margin:18px 0 5px;}
+.contact-form-inner{display:flex;flex-direction:column;gap:10px;margin-top:14px;}
+.contact-form-inner input,.contact-form-inner textarea{padding:10px 12px;border:1px solid var(--border-split);border-radius:6px;font-size:13px;font-family:inherit;transition:border-color .2s;}
+.contact-form-inner input:focus,.contact-form-inner textarea:focus{outline:none;border-color:var(--accent-green);}
+.contact-form-inner input.error-field,.contact-form-inner textarea.error-field{border-color:var(--error-red);}
+.contact-form-inner textarea{resize:vertical;min-height:90px;}
+.btn-contact-send{background:var(--primary-dark);color:#fff;border:none;padding:11px;font-size:13px;font-weight:700;border-radius:6px;cursor:pointer;font-family:inherit;transition:background .2s;}
+.btn-contact-send:hover{background:var(--accent-green);}
+.contact-success-box{background:#f0fdf4;border:1px solid #86efac;color:#166534;padding:16px;border-radius:8px;text-align:center;font-size:14px;display:none;margin-top:12px;}
+.contact-success-box.show{display:block;}
+
+.recovery-card{background:#fff;border-radius:14px;padding:34px;width:90%;max-width:400px;position:relative;}
+.recovery-card h3{font-size:18px;color:var(--primary-dark);margin-bottom:6px;}
+.recovery-card p{font-size:13px;color:var(--slate-text);margin-bottom:16px;}
+.btn-recovery-send{background:var(--primary-dark);color:#fff;border:none;padding:12px;width:100%;font-size:13px;font-weight:700;border-radius:6px;cursor:pointer;font-family:inherit;margin-top:12px;transition:background .2s;}
+.btn-recovery-send:hover{background:var(--accent-green);}
+.success-msg{background:#f0fdf4;border:1px solid #86efac;color:#166534;padding:12px;border-radius:6px;font-size:13px;margin-top:12px;display:none;}
+.success-msg.show{display:block;}
+
+.map-modal-card{background:#fff;border-radius:14px;width:95%;max-width:520px;padding:32px;position:relative;}
+.map-modal-card h3{font-size:18px;color:var(--primary-dark);margin-bottom:6px;}
+.map-modal-card p{font-size:13px;color:var(--slate-text);margin-bottom:18px;}
+.recycler-list{display:flex;flex-direction:column;gap:12px;}
+.recycler-item{background:#F8FAFC;border:1px solid var(--border-split);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:border-color .2s,background .2s;}
+.recycler-item:hover{border-color:var(--primary-dark);background:#f0fdf4;}
+.recycler-avatar{width:42px;height:42px;border-radius:50%;background:var(--primary-dark);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.recycler-info h4{font-size:14px;color:var(--primary-dark);margin-bottom:2px;}
+.recycler-info p{font-size:12px;color:var(--slate-text);}
+.recycler-badge{font-size:10px;background:#dcfce7;color:var(--accent-green);padding:2px 8px;border-radius:20px;font-weight:700;display:inline-block;margin-top:4px;}
+.btn-contact-recycler{background:var(--primary-dark);color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;margin-left:auto;flex-shrink:0;transition:background .2s;}
+.btn-contact-recycler:hover{background:var(--accent-green);}
+
+.discount-modal-card{background:#fff;border-radius:14px;width:95%;max-width:480px;padding:32px;position:relative;}
+.discount-modal-card h3{font-size:18px;color:var(--primary-dark);margin-bottom:6px;}
+.discount-modal-card>p{font-size:13px;color:var(--slate-text);margin-bottom:20px;}
+.discount-list{display:flex;flex-direction:column;gap:10px;}
+.discount-item{background:#F8FAFC;border:1px solid var(--border-split);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;transition:border-color .2s;}
+.discount-item:hover{border-color:var(--accent-green);}
+.discount-icon{font-size:24px;}
+.discount-info h4{font-size:13px;color:var(--primary-dark);margin-bottom:2px;}
+.discount-info p{font-size:12px;color:var(--slate-text);}
+.discount-pts{font-size:12px;font-weight:700;color:var(--accent-green);margin-left:auto;flex-shrink:0;}
+.btn-canjear{background:var(--accent-green);color:#fff;border:none;padding:6px 14px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;}
+.btn-canjear:hover{background:var(--primary-dark);}
+
+.horario-modal-card{background:#fff;border-radius:14px;width:95%;max-width:440px;padding:32px;position:relative;}
+.horario-modal-card h3{font-size:18px;color:var(--primary-dark);margin-bottom:6px;}
+.horario-modal-card>p{font-size:13px;color:var(--slate-text);margin-bottom:20px;}
+.horario-list{display:flex;flex-direction:column;gap:10px;}
+.horario-item{background:#F8FAFC;border:1px solid var(--border-split);border-radius:10px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;}
+.horario-item .dia{font-size:13px;font-weight:700;color:var(--primary-dark);}
+.horario-item .hora{font-size:13px;color:var(--slate-text);}
+.horario-item .estado{font-size:11px;padding:3px 8px;border-radius:20px;font-weight:700;}
+.estado.disponible{background:#dcfce7;color:var(--success-green);}
+.estado.lleno{background:#FEE2E2;color:#DC2626;}
+
+.nav-modal-card{background:#fff;border-radius:14px;width:95%;max-width:460px;padding:32px;position:relative;}
+.nav-modal-card h3{font-size:18px;color:var(--primary-dark);margin-bottom:6px;}
+.nav-modal-card>p{font-size:13px;color:var(--slate-text);margin-bottom:20px;}
+.route-steps{display:flex;flex-direction:column;gap:0;}
+.route-step{display:flex;gap:14px;position:relative;}
+.route-step:not(:last-child)::before{content:'';position:absolute;left:15px;top:32px;bottom:0;width:2px;background:var(--border-split);}
+.step-dot{width:32px;height:32px;border-radius:50%;background:var(--primary-dark);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;z-index:1;}
+.step-dot.current{background:var(--accent-green);animation:pulse-dot 1.5s infinite;}
+@keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(47,83,31,.4);}50%{box-shadow:0 0 0 8px rgba(47,83,31,0);}}
+.step-info{padding:4px 0 20px;}
+.step-info h4{font-size:13px;color:var(--primary-dark);margin-bottom:2px;}
+.step-info p{font-size:12px;color:var(--slate-text);}
+.btn-iniciar-nav{background:var(--primary-dark);color:#fff;border:none;padding:12px;width:100%;font-size:14px;font-weight:700;border-radius:8px;cursor:pointer;font-family:inherit;margin-top:8px;transition:background .2s;}
+.btn-iniciar-nav:hover{background:var(--accent-green);}
+
+.store-modal-card{background:#fff;border-radius:14px;width:95%;max-width:400px;padding:32px;position:relative;text-align:center;}
+.store-modal-card h3{font-size:18px;color:var(--primary-dark);margin-bottom:6px;}
+.store-modal-card>p{font-size:13px;color:var(--slate-text);margin-bottom:24px;}
+.store-options{display:flex;flex-direction:column;gap:12px;}
+.store-btn-opt{background:var(--primary-dark);color:#fff;border:none;padding:14px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .2s;}
+.store-btn-opt:hover{background:var(--accent-green);}
+.store-btn-opt.secondary{background:#F1F5F9;color:var(--primary-dark);}
+.store-btn-opt.secondary:hover{background:var(--border-split);}
+
+@media(max-width:900px){
+
+    .nav-links{display:none;}
+    .hamburger-btn{display:flex;}
+    .auth-btn-group .btn-login-trigger{display:none;}
+    .brand-name{font-size:17px;}
+
+
+    .hero-section{padding:50px 20px 60px;}
+    .hero-container{grid-template-columns:1fr;gap:32px;text-align:center;}
+    .hero-left-visual{display:flex;justify-content:center;order:-1;}
+    .hero-tagline{text-align:center;}
+    .hero-main-title{font-size:28px;text-align:center;}
+    .hero-paragraph{font-size:14px;text-align:center;}
+    .hero-download-buttons{justify-content:center;}
+    .hero-bullets-checks{justify-content:center;}
+
+
+    .metrics-container,.recycler-container{grid-template-columns:1fr;gap:28px;}
+    .about-grid{grid-template-columns:repeat(2,1fr);}
+    .cards-grid-layout{grid-template-columns:repeat(2,1fr);}
+    .inclusive-grid{grid-template-columns:repeat(2,1fr);}
+    .section-title-md{font-size:22px;}
+    .center-title{font-size:24px;}
+
+
+    .figma-auth-container{grid-template-columns:1fr;max-width:480px;}
+    .auth-brand-sidebar{display:none;}
+    .form-double-row{flex-direction:column;}
+    .auth-form-workspace{padding:24px;}
+
+
+    .wallet-info-box{flex-direction:column;gap:10px;}
+
+
+    .figma-phones-wrapper{width:300px;height:390px;margin:0 auto;}
+    .figma-phone{width:175px;}
+
+
+    .recycler-right-visual{display:flex;justify-content:center;}
+}
+
+@media(max-width:600px){
+
+    .brand-name{font-size:15px;}
+    .brand-logo-img{width:30px;height:30px;}
+    .btn-register-trigger{padding:7px 10px;font-size:12px;}
+
+
+    .hero-section{padding:36px 16px 48px;}
+    .hero-main-title{font-size:22px;line-height:1.2;}
+    .hero-paragraph{font-size:13px;}
+    .hero-download-buttons{flex-direction:column;align-items:center;gap:10px;}
+    .btn-store{width:100%;max-width:260px;justify-content:center;font-size:13px;}
+    .hero-bullets-checks{flex-direction:column;align-items:center;gap:6px;font-size:12px;}
+
+
+    .figma-phones-wrapper{width:240px;height:320px;}
+    .figma-phone{width:145px;border-radius:20px;border-width:4px;}
+    .figma-phone-notch{width:44px;height:8px;}
+    .figma-phone-inner{padding:8px 9px 12px;gap:7px;}
+    .fp-pts{font-size:12px;}
+    .fp-map{height:80px;}
+    .fp-btn{font-size:9px;padding:7px 8px;}
+
+
+    .metrics-section{padding:48px 16px;}
+    .metrics-container{grid-template-columns:1fr;}
+    .grid-stats{grid-template-columns:1fr 1fr;}
+    .stat-box h3{font-size:26px;}
+    .stat-box{padding:16px;}
+
+    .rewards-section{padding:48px 16px;}
+    .cards-grid-layout{grid-template-columns:1fr;}
+    .info-feature-card{padding:18px;}
+
+    .recycler-segment-section{padding:48px 16px;}
+    .recycler-container{grid-template-columns:1fr;}
+
+    .inclusive-section{padding:40px 16px;}
+    .inclusive-grid{grid-template-columns:1fr 1fr;}
+    .inclusive-card{padding:16px;}
+
+    .about-section{padding:40px 16px;}
+    .about-grid{grid-template-columns:1fr;}
+
+    .cta-bottom-section{padding:48px 16px;}
+    .cta-bottom-section h2{font-size:22px;}
+    .hero-download-buttons.center-flex{flex-direction:column;align-items:center;}
+    .hero-download-buttons.center-flex .btn-store{width:100%;max-width:260px;justify-content:center;}
+
+    .main-footer{padding:20px 16px;}
+    .footer-links{flex-direction:column;gap:6px;align-items:center;}
+
+
+    .auth-form-workspace{padding:18px;}
+    .role-tabs-selector{gap:2px;}
+    .tab-selector-item{font-size:11px;padding:7px 4px;}
+    .auth-mode-tab{font-size:12px;padding:9px;}
+
+
+    .page-modal-container{padding:24px 18px;}
+    .qr-interactive-card{padding:22px 16px;}
+    .recovery-card{padding:24px 18px;}
+    .map-modal-card,.discount-modal-card,.horario-modal-card,.nav-modal-card,.store-modal-card{padding:22px 16px;}
+
+
+    .toast{bottom:16px;right:16px;left:16px;max-width:none;font-size:12px;padding:12px 14px;}
+
+
+    .section-title-md{font-size:20px;}
+    .section-desc-txt{font-size:13px;}
+    .center-title{font-size:22px;}
+    .center-subtitle{font-size:13px;}
+}
+
+@media(max-width:380px){
+    .figma-phones-wrapper{width:200px;height:280px;}
+    .figma-phone{width:120px;border-radius:16px;}
+    .hero-main-title{font-size:20px;}
+    .inclusive-grid{grid-template-columns:1fr;}
+    .grid-stats{grid-template-columns:1fr;}
+}
+
+.dash-wrapper{display:grid;grid-template-columns:240px 1fr;min-height:100vh;background:#F8FAFC;}
+.dash-sidebar{background:var(--dark-bg);display:flex;flex-direction:column;padding:24px 16px;gap:8px;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.dash-logo{display:flex;align-items:center;gap:10px;padding:0 8px 20px;border-bottom:1px solid rgba(255,255,255,.1);}
+.dash-logo span{font-family:var(--font-heading);font-size:16px;color:#fff;}
+.dash-nav{display:flex;flex-direction:column;gap:4px;flex:1;margin-top:12px;}
+.dash-link{color:rgba(255,255,255,.6);text-decoration:none;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;transition:background .2s,color .2s;}
+.dash-link:hover{background:rgba(255,255,255,.08);color:#fff;}
+.dash-link.active{background:var(--primary-dark);color:var(--brand-light);}
+.dash-logout-btn{background:rgba(239,68,68,.15);color:#EF4444;border:1px solid rgba(239,68,68,.3);padding:10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:auto;transition:background .2s;}
+.dash-logout-btn:hover{background:rgba(239,68,68,.3);}
+.dash-main{padding:28px;overflow-y:auto;}
+.dash-tab{display:none !important;}
+.dash-tab.active{display:block !important;}
+.dash-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;}
+.dash-topbar h2{font-size:22px;color:var(--primary-dark);}
+.dash-date{font-size:13px;color:var(--slate-text);}
+.dash-cards-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.dash-stat-card{background:#fff;border:1px solid var(--border-split);border-radius:12px;padding:20px;display:flex;align-items:center;gap:16px;transition:transform .2s;}
+.dash-stat-card:hover{transform:translateY(-2px);}
+.dash-stat-card.green{background:var(--primary-dark);border-color:var(--primary-dark);}
+.dash-stat-card.green .dsc-val,.dash-stat-card.green .dsc-lbl{color:#fff;}
+.dash-stat-card.dark{background:var(--dark-bg);border-color:var(--dark-bg);}
+.dash-stat-card.dark .dsc-val{color:var(--brand-light);}
+.dash-stat-card.dark .dsc-lbl{color:rgba(255,255,255,.6);}
+.dsc-icon{font-size:28px;flex-shrink:0;}
+.dsc-val{font-size:22px;font-weight:800;font-family:var(--font-heading);color:var(--primary-dark);}
+.dsc-lbl{font-size:12px;color:var(--slate-text);margin-top:2px;}
+.dash-row-2col{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.dash-panel{background:#fff;border:1px solid var(--border-split);border-radius:12px;padding:20px;}
+.dash-panel h3{font-size:15px;color:var(--primary-dark);margin-bottom:14px;}
+
+.recojo-status-bar{display:flex;align-items:center;gap:0;margin-bottom:16px;}
+.rsb-step{display:flex;flex-direction:column;align-items:center;font-size:11px;color:#94A3B8;gap:4px;flex-shrink:0;}
+.rsb-step.done{color:var(--accent-green);}
+.rsb-step.active{color:var(--primary-dark);font-weight:700;}
+.rsb-line{flex:1;height:2px;background:#E2E8F0;min-width:20px;}
+.rsb-line.done{background:var(--accent-green);}
+.reciclador-asignado{background:#F8FAFC;border-radius:8px;padding:12px;display:flex;align-items:center;gap:12px;margin-top:8px;}
+.reciclador-asignado .rec-av{font-size:24px;}
+
+.benefit-list{display:flex;flex-direction:column;gap:10px;}
+.benefit-item{display:flex;align-items:center;gap:10px;padding:10px;background:#F8FAFC;border-radius:8px;}
+.bi-icon{font-size:20px;flex-shrink:0;}
+.benefit-item>div{flex:1;} .benefit-item strong{font-size:13px;display:block;} .benefit-item small{font-size:11px;color:var(--slate-text);}
+.bi-pts{font-size:11px;font-weight:700;color:var(--accent-green);white-space:nowrap;}
+.btn-ver-mas{background:none;border:none;color:var(--accent-green);font-size:12px;font-weight:700;cursor:pointer;margin-top:10px;padding:0;}
+
+.impact-row{display:flex;gap:16px;flex-wrap:wrap;}
+.impact-item{background:#F8FAFC;border-radius:8px;padding:14px 16px;flex:1;min-width:80px;text-align:center;}
+.ii-val{font-size:20px;font-weight:800;font-family:var(--font-heading);color:var(--primary-dark);}
+.ii-lbl{font-size:11px;color:var(--slate-text);margin-top:2px;}
+
+.dash-table{width:100%;border-collapse:collapse;font-size:13px;}
+.dash-table th{background:#F8FAFC;padding:10px 12px;text-align:left;font-size:12px;color:var(--slate-text);border-bottom:1px solid var(--border-split);}
+.dash-table td{padding:10px 12px;border-bottom:1px solid var(--border-split);color:#0F172A;}
+.dash-table tr:last-child td{border-bottom:none;}
+.badge-status{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:700;}
+.badge-status.completado{background:#dcfce7;color:var(--success-green);}
+.badge-status.en-proceso{background:#FEF3C7;color:#D97706;}
+.badge-status.cancelado{background:#FEE2E2;color:#DC2626;}
+.pts-pos{color:var(--success-green);font-weight:700;}
+.pts-neg{color:#DC2626;font-weight:700;}
+
+.material-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+.chip{background:#F1F5F9;border:2px solid var(--border-split);padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;color:var(--slate-text);transition:all .2s;font-family:inherit;}
+.chip.active,.chip:hover{background:var(--primary-dark);color:#fff;border-color:var(--primary-dark);}
+
+.sol-list{display:flex;flex-direction:column;gap:12px;}
+.sol-item{background:#F8FAFC;border:1px solid var(--border-split);border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px;}
+.sol-ico{font-size:22px;flex-shrink:0;}
+.sol-item>div{flex:1;} .sol-item strong{font-size:13px;display:block;color:var(--primary-dark);} .sol-item p{font-size:12px;color:var(--slate-text);} .sol-item small{font-size:11px;color:#94A3B8;}
+.btn-small-green{background:var(--primary-dark);color:#fff;border:none;padding:7px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;white-space:nowrap;}
+.btn-small-green:hover{background:var(--accent-green);}
+
+.inv-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:13px;}
+.inv-bar{flex:1;background:#E2E8F0;height:8px;border-radius:4px;overflow:hidden;}
+.inv-bar div{height:100%;border-radius:4px;transition:width .6s;}
+.inv-row span:first-child{width:90px;flex-shrink:0;font-size:12px;}
+.inv-row span:last-child{width:50px;text-align:right;font-size:11px;color:var(--slate-text);}
+
+.perfil-header{display:flex;align-items:center;gap:16px;padding-bottom:16px;border-bottom:1px solid var(--border-split);}
+.perfil-avatar{font-size:40px;background:#F1F5F9;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+.config-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border-split);font-size:13px;color:var(--slate-text);}
+.config-row:last-child{border-bottom:none;}
+.toggle{position:relative;display:inline-block;width:40px;height:22px;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;}
+.slider{position:absolute;cursor:pointer;inset:0;background:#E2E8F0;border-radius:22px;transition:.3s;}
+.slider::before{content:'';position:absolute;width:16px;height:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s;}
+.toggle input:checked+.slider{background:var(--primary-dark);}
+.toggle input:checked+.slider::before{transform:translateX(18px);}
+
+@media(max-width:900px){
+    .dash-wrapper{grid-template-columns:1fr;}
+    .dash-sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;gap:4px;padding:12px;}
+    .dash-logo{padding-bottom:0;border-bottom:none;margin-right:auto;}
+    .dash-nav{flex-direction:row;flex-wrap:wrap;gap:4px;margin-top:0;}
+    .dash-link{padding:7px 10px;font-size:11px;}
+    .dash-logout-btn{margin-top:0;padding:7px 12px;font-size:11px;}
+    .dash-cards-row{grid-template-columns:repeat(2,1fr);}
+    .dash-row-2col{grid-template-columns:1fr;}
+}
+@media(max-width:540px){
+    .dash-cards-row{grid-template-columns:1fr 1fr;}
+    .dash-main{padding:16px;}
+    .dash-topbar{flex-direction:column;align-items:flex-start;gap:4px;}
+}
+.figma-phones-wrapper{position:relative;width:360px;height:460px;flex-shrink:0;}
+.figma-phone{position:absolute;width:210px;border-radius:32px;background:var(--dark-bg);box-shadow:0 24px 70px rgba(0,0,0,.55);overflow:hidden;border:5px solid rgba(255,255,255,.12);}
+.phone-back{left:0;top:40px;z-index:1;transform:rotate(-4deg);}
+.phone-front{right:0;top:0;z-index:2;transform:rotate(3deg);}
+.figma-phone-notch{width:60px;height:10px;background:rgba(0,0,0,.4);border-radius:0 0 8px 8px;margin:0 auto;}
+.figma-phone-inner{padding:10px 12px 16px;display:flex;flex-direction:column;gap:9px;}
+.fp-header{background:rgba(0,0,0,.3);border-radius:8px;padding:9px 10px;}
+.fp-header-dark{background:rgba(0,0,0,.4);}
+.fp-brand{font-size:10px;font-weight:700;color:var(--brand-light);}
+.fp-balance{background:rgba(255,255,255,.1);border-radius:8px;padding:11px 12px;border:1px solid rgba(255,255,255,.08);}
+.fp-pts{font-size:14px;font-weight:800;color:#fff;display:block;margin-bottom:7px;}
+.fp-bar{background:rgba(255,255,255,.15);height:5px;border-radius:4px;overflow:hidden;}
+.fp-bar-fill{background:var(--brand-light);height:100%;width:40%;}
+.fp-sub{font-size:9px;color:rgba(255,255,255,.5);margin-top:4px;display:block;}
+
+.fp-map{background:var(--accent-green);border-radius:8px;height:110px;position:relative;overflow:hidden;}
+.fp-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);width:100%;height:100%;gap:0;}
+.fp-grid div{border:0.5px solid rgba(255,255,255,.15);}
+.fp-pin{position:absolute;font-size:14px;line-height:1;}
+.fp-pin-a{bottom:28%;right:30%;}
+.fp-pin-b{bottom:40%;left:28%;}
+.fp-btn{background:var(--brand-light);color:var(--primary-dark);border:none;padding:9px 10px;border-radius:8px;font-size:10px;font-weight:800;width:100%;cursor:pointer;font-family:inherit;transition:background .2s;}
+.fp-btn:hover{background:#9ee87a;}
+.fp-btn-blue{background:var(--brand-light);color:var(--primary-dark);}
+.fp-btn-blue:hover{background:#9ee87a;}
+
+.fp-rec-stats{background:rgba(255,255,255,.1);border-radius:8px;padding:11px 12px;border:1px solid rgba(255,255,255,.08);}
+.fp-rec-big{font-size:10px;font-weight:700;color:#fff;display:block;}
+.fp-rec-sub{font-size:9px;color:rgba(255,255,255,.5);display:block;margin-top:2px;}
+.fp-parada{background:rgba(255,255,255,.08);border-radius:8px;padding:11px 12px;border:1px solid rgba(255,255,255,.08);}
+.fp-parada-lbl{font-size:11px;font-weight:700;color:#fff;display:block;margin-bottom:2px;}
+.fp-parada-det{font-size:9px;color:var(--brand-light);display:block;}
+
+.fp-extra{background:rgba(255,255,255,.07);border-radius:8px;padding:10px 12px;border:1px solid rgba(255,255,255,.07);}
+.fp-extra-lbl{font-size:9px;color:var(--brand-light);display:block;margin-bottom:4px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
+.fp-mini-bar{background:rgba(255,255,255,.15);height:4px;border-radius:4px;overflow:hidden;margin-bottom:4px;}
+.fp-mini-bar-fill{background:var(--brand-light);height:100%;}
+@media(max-width:900px){
+    .figma-phones-wrapper{width:300px;height:390px;margin:0 auto;}
+    .figma-phone{width:175px;}
+}
+@media(max-width:540px){
+    .figma-phones-wrapper{width:250px;height:330px;}
+    .figma-phone{width:148px;border-radius:22px;}
+}
+    </style>
+</head>
+<body>
+
+<div class="toast" id="toast-msg"></div>
+
+<header class="navbar">
+    <div class="navbar-container">
+        <div class="logo-area" onclick="scrollToTop()">
+            <img src="1.jpg" alt="Logo RecirculaLima" class="brand-logo-img">
+            <span class="brand-name">RecirculaLima</span>
+        </div>
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Abrir menú">
+            <span></span><span></span><span></span>
+        </button>
+        <nav class="nav-links" id="desktop-nav">
+            <a href="#inicio">Inicio</a>
+            <a href="#recicladores">Recicladores</a>
+            <a href="#impacto">Impacto</a>
+            <a href="#nosotros">Sobre Nosotros</a>
+            <a href="#recipuntos">ReciPuntos</a>
+        </nav>
+        <div id="auth-nav-action">
+            <div class="auth-btn-group" id="auth-btn-group">
+                <button class="btn-login-trigger" id="open-login-btn">Iniciar Sesión</button>
+                <button class="btn-register-trigger" id="open-register-btn">Registrarse</button>
+            </div>
+            <div id="session-active-area" class="hidden">
+                <div class="session-active-badge">
+                    <span id="session-user-info" class="session-user-info"></span>
+                    <button class="btn-session-logout" id="action-logout-trigger">Salir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="mobile-nav-drawer" id="mobile-nav-drawer">
+        <a href="#inicio" onclick="closeMobileNav()">Inicio</a>
+        <a href="#recicladores" onclick="closeMobileNav()">Recicladores</a>
+        <a href="#impacto" onclick="closeMobileNav()">Impacto</a>
+        <a href="#nosotros" onclick="closeMobileNav()">Sobre Nosotros</a>
+        <a href="#recipuntos" onclick="closeMobileNav()">ReciPuntos</a>
+        <button class="mob-btn" onclick="closeMobileNav();openAuthModal('login')">Iniciar Sesión</button>
+        <button class="mob-btn" style="background:var(--accent-green);margin-top:8px;" onclick="closeMobileNav();openAuthModal('register')">Registrarse</button>
+    </nav>
+</header>
+
+<div id="landing-page">
+
+<section id="inicio" class="hero-section">
+    <div class="hero-container">
+        <div class="hero-left-visual">
+
+            <div class="figma-phones-wrapper">
+
+                <div class="figma-phone phone-back">
+                    <div class="figma-phone-notch"></div>
+                    <div class="figma-phone-inner">
+                        <div class="fp-header">
+                            <span class="fp-brand">RecirculaLima • Hola Julio</span>
+                        </div>
+                        <div class="fp-balance">
+                            <span class="fp-pts">120 ReciPuntos</span>
+                            <div class="fp-bar"><div class="fp-bar-fill"></div></div>
+                            <span class="fp-sub">40% hacia tu recompensa</span>
+                        </div>
+
+                        <div class="fp-map">
+                            <div class="fp-grid">
+                                <div></div><div></div><div></div><div></div>
+                                <div></div><div></div><div></div><div></div>
+                                <div></div><div></div><div></div><div></div>
+                                <div></div><div></div><div></div><div></div>
+                            </div>
+                            <div class="fp-pin fp-pin-a">📍</div>
+                            <div class="fp-pin fp-pin-b">📍</div>
+                        </div>
+                        <div class="fp-extra">
+                            <span class="fp-extra-lbl">Reciclador cercano</span>
+                            <span style="font-size:10px;font-weight:700;color:#fff;display:block;">Carlos M. · 320m · Hoy 2pm</span>
+                            <div class="fp-mini-bar" style="margin-top:6px;"><div class="fp-mini-bar-fill" style="width:70%;"></div></div>
+                            <span style="font-size:9px;color:rgba(255,255,255,.5);">✅ Verificado · 4.9 ⭐</span>
+                        </div>
+                        <button class="fp-btn" id="btn-ver-recicladores">Ver recicladores cercanos</button>
+                    </div>
+                </div>
+
+                <div class="figma-phone phone-front">
+                    <div class="figma-phone-notch"></div>
+                    <div class="figma-phone-inner">
+                        <div class="fp-header fp-header-dark">
+                            <span class="fp-brand" style="color:#fff;">Mi jornada · Evans S.</span>
+                        </div>
+                        <div class="fp-rec-stats">
+                            <span class="fp-rec-big">18 kg / 30 kg · Meta diaria</span>
+                            <div class="fp-bar" style="margin:6px 0 4px;"><div class="fp-bar-fill" style="width:60%;background:#60A5FA;"></div></div>
+                            <span class="fp-rec-sub">3 vecinos confirmados</span>
+                        </div>
+                        <div class="fp-parada">
+                            <span class="fp-parada-lbl">Parada 1 · 350m</span>
+                            <span class="fp-parada-det">Julio Álvarez · Plástico · 10:00</span>
+                        </div>
+                        <div class="fp-extra">
+                            <span class="fp-extra-lbl">Parada 2 · 420m</span>
+                            <span style="font-size:10px;font-weight:700;color:#fff;display:block;">Rosa C. · Papel · 10:30</span>
+                            <span style="font-size:9px;color:rgba(255,255,255,.5);">3 kg estimados</span>
+                        </div>
+                        <button class="fp-btn fp-btn-blue">Iniciar ruta optimizada</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-right-content">
+            <span class="hero-tagline">APP DE RECICLAJE COLABORATIVO - LIMA</span>
+            <h1 class="hero-main-title">Transforma tus residuos en <span>beneficios</span> con RecirculaLima</h1>
+            <p class="hero-paragraph">Conectamos vecinos con recicladores formalizados cerca de tu hogar. Segrega, notifica, gana ReciPuntos y canjéalos por descuentos en comercios locales.</p>
+            <div class="hero-download-buttons">
+
+                <button class="btn-store" id="btn-ios">🍎 Descargar en iOS</button>
+                <button class="btn-store" id="btn-android">🤖 Descargar en Android</button>
+            </div>
+            <div class="hero-bullets-checks">
+                <span>✓ Gratis para vecinos</span>
+                <span>✓ Sin registro largo</span>
+                <span>✓ Recicladores verificados</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="impacto" class="metrics-section">
+    <div class="metrics-container">
+        <div>
+            <span class="section-mini-tag">EL PROBLEMA QUE RESOLVEMOS</span>
+            <h2 class="section-title-md">Perú valoriza solo el 1.8% de sus residuos sólidos</h2>
+            <div class="grid-stats">
+                <div class="stat-box dark-box"><h3>1.8%</h3><p>de residuos valorizados en Perú (MINAM, 2023)</p></div>
+                <div class="stat-box white-box"><h3>8M</h3><p>toneladas de residuos generadas anualmente en Lima</p></div>
+                <div class="stat-box white-box"><h3>120K</h3><p>recicladores informales sin formalización ni protección</p></div>
+                <div class="stat-box dark-box"><h3>73%</h3><p>de ciudadanos dispuestos a segregar si tienen orientación</p></div>
+            </div>
+        </div>
+        <div class="metrics-right-text">
+            <h3>RecirculaLima cierra la brecha entre ciudadanos dispuestos y recicladores formalizados</h3>
+            <p>La mayoría de residuos reciclables terminan en rellenos sanitarios no porque los ciudadanos no quieran reciclar, sino porque no tienen un sistema confiable y accesible.</p>
+            <p>Cada usuario activo contribuye a incrementar la tasa de valorización local generando impacto ambiental medible que se refleja en su perfil.</p>
+            <span class="source-caption">Fuente: MINAM — Plan Nacional de Gestión Integral de Residuos Sólidos 2016–2024.</span>
+        </div>
+    </div>
+</section>
+
+<section id="recicladores" class="recycler-segment-section">
+    <div class="recycler-container">
+        <div>
+            <span class="section-mini-tag">SEGMENTO RECICLADOR</span>
+            <h2 class="section-title-md">Formaliza tu trabajo, optimiza tu ruta, incrementa tus ingresos</h2>
+            <p class="section-desc-txt">RecirculaLima te conecta con vecinos que ya tienen su material segregado y listo. Sin puertas cerradas, sin viajes en vano.</p>
+            <div class="feature-rows-list">
+                <div class="feature-row-item"><div class="row-icon">🗺️</div><div><h4>Rutas optimizadas automáticamente</h4><p>El sistema calcula el orden de visitas que minimiza tu recorrido. Más material en menos tiempo.</p></div></div>
+                <div class="feature-row-item"><div class="row-icon">🔒</div><div><h4>Seguridad y formalización independiente</h4><p>Tu perfil verificado acredita tu volumen de trabajo ante compradores y cooperativas.</p></div></div>
+                <div class="feature-row-item"><div class="row-icon">📊</div><div><h4>Dashboard de metas y progreso diario</h4><p>Visualiza en tiempo real cuánto has recolectado y qué tan cerca estás de tu meta.</p></div></div>
+                <div class="feature-row-item"><div class="row-icon">✅</div><div><h4>Registro de material con QR</h4><p>Cada entrega queda registrada con fecha, peso y tipo de material. Historial descargable.</p></div></div>
+            </div>
+        </div>
+        <div style="display:flex;justify-content:center;">
+            <div class="mockup-wrapper" style="background:rgba(26,34,24,.6);">
+                <div class="phone-screen-mock dark-mock">
+                    <div class="mock-user-top">🟢 Mi jornada - Evans S.</div>
+                    <div class="mock-status-tag">Ruta activa • Parada 2/3</div>
+                    <div class="mock-double-stat">
+                        <div><strong>18.5</strong><small>kg recolectados</small></div>
+                        <div><strong>3</strong><small>paradas hoy</small></div>
+                    </div>
+                    <div class="mock-meta-box">
+                        <span>Meta diaria: 30 kg</span>
+                        <div class="mock-progress-bar" style="margin-top:6px;"><div class="progress-fill" style="width:62%"></div></div>
+                        <small>62% completado • faltan 11.5 kg</small>
+                    </div>
+                    <div class="mock-address-box">
+                        <h5>Próxima parada - Jr. Libertad 120</h5>
+                        <p>Rosa C. • Papel • 3 kg est. • 420m</p>
+                    </div>
+
+                    <button class="mock-btn-action bg-green" id="btn-navegar-parada">Navegar a siguiente parada</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="nosotros" class="about-section">
+    <h2 class="center-title">Sobre Nosotros</h2>
+    <p class="center-subtitle">En RecirculaLima creemos que la tecnología puede transformar la gestión de residuos y construir una ciudad más sostenible.</p>
+    <div class="about-grid">
+        <div class="about-card"><div class="about-icon">🎯</div><h4>Misión</h4><p>Impulsar la transformación ambiental del Perú mediante soluciones tecnológicas que conecten a la comunidad y optimicen la gestión de residuos.</p></div>
+        <div class="about-card"><div class="about-icon">🚀</div><h4>Visión</h4><p>Ser la organización líder en tecnologías para la economía circular en Perú para el 2030.</p></div>
+        <div class="about-card"><div class="about-icon">🌱</div><h4>Valores</h4><p>Sostenibilidad, innovación, inclusión social, colaboración comunitaria, transparencia y ética.</p></div>
+    </div>
+</section>
+
+<section id="recipuntos" class="rewards-section">
+    <div>
+        <span class="section-mini-tag">SISTEMA DE RECOMPENSAS</span>
+        <h2 class="section-title-md">Tu reciclaje tiene un valor real</h2>
+        <p class="section-desc-txt">Con RecirculaLima cada kilogramo de material limpio que entregas al reciclador se convierte en <strong>ReciPuntos</strong> que puedes canjear por beneficios tangibles en tu comunidad.</p>
+    </div>
+    <div class="cards-grid-layout">
+        <div class="info-feature-card item-highlighted">
+            <div class="card-icon-bubble">♻️</div>
+            <h3>Entrega y gana ReciPuntos</h3>
+            <p>Por cada kg de residuo segregado y validado recibes puntos en tu <strong>billetera digital</strong> (tu monedero virtual dentro de la app). Sin trámites, sin espera.</p>
+
+            <button class="btn-card-action" id="trigger-qr-generator">Validación con QR ℹ️</button>
+        </div>
+        <div class="info-feature-card">
+            <div class="card-icon-bubble">🏪</div>
+            <h3>Descuentos en comercios locales</h3>
+            <p>Canjea tus ReciPuntos en bodegas, farmacias y restaurantes socios de la red RecirculaLima. Beneficios que se quedan en tu barrio.</p>
+
+            <button class="btn-card-action-secondary" id="btn-red-local">Ver red local</button>
+        </div>
+        <div class="info-feature-card">
+            <div class="card-icon-bubble">🎈</div>
+            <h3>Recicladores verificados cerca</h3>
+            <p>Encuentra recicladores formalizados a menos de 500m con horarios reales confirmados. Elimina la incertidumbre de cuándo pasarán por tu domicilio.</p>
+
+            <button class="btn-card-action-secondary" id="btn-ver-horarios">Ver horarios disponibles</button>
+        </div>
+    </div>
+    <div class="wallet-info-box">
+        <div class="wallet-icon-big">💳</div>
+        <div>
+            <h4>¿Qué es la Billetera Digital de ReciPuntos?</h4>
+            <p>Es tu monedero virtual dentro de RecirculaLima donde se acumulan automáticamente tus puntos cada vez que el reciclador valida tu entrega con el código QR. Puedes consultar tu saldo, ver tu historial de canjes y usar tus puntos desde la app — sin tarjetas ni trámites físicos.</p>
+        </div>
+    </div>
+</section>
+
+<section class="inclusive-section">
+    <h2 class="center-title">Diseño Inclusivo</h2>
+    <p class="center-subtitle">RecirculaLima fue diseñada para ser accesible, intuitiva y fácil de usar para toda la comunidad, sin importar edad, habilidades o dispositivo.</p>
+    <div class="inclusive-grid">
+        <div class="inclusive-card"><div class="inclusive-icon">♿</div><h4>Accesibilidad visual</h4><p>Los colores cumplen el estándar WCAG AA — texto siempre legible también para personas con baja visión o daltonismo.</p></div>
+        <div class="inclusive-card"><div class="inclusive-icon">👆</div><h4>Botones grandes</h4><p>Todos los botones miden mínimo 48×48 píxeles (px) — el tamaño de un dedo en pantalla — para evitar tocar el botón equivocado.</p></div>
+        <div class="inclusive-card"><div class="inclusive-icon">📱</div><h4>Navegación simple</h4><p>Pocos pasos para cada tarea, con instrucciones claras. Pensada para usuarios de cualquier edad o nivel de experiencia digital.</p></div>
+        <div class="inclusive-card"><div class="inclusive-icon">🔊</div><h4>Información clara</h4><p>Los mensajes usan texto e iconos, no solo colores, para que todos entiendan qué ocurre independientemente de cómo perciban el color.</p></div>
+    </div>
+</section>
+
+<section class="cta-bottom-section">
+    <span class="cta-pre">ÚNETE HOY</span>
+    <h2>Empieza a reciclar con propósito y recompensa</h2>
+    <p>Segrega tus residuos y conecta con el reciclador más cercano. Gratis para vecinos.</p>
+    <div class="hero-download-buttons center-flex">
+        <button class="btn-store white-btn" id="btn-cta-registrar" onclick="openModal('auth-system-overlay');setMode('register')">Crear mi cuenta gratis</button>
+        <button class="btn-store transparent-btn" id="btn-cta-login" onclick="openModal('auth-system-overlay');setMode('login')">Ya tengo cuenta</button>
+    </div>
+</section>
+
+<footer class="main-footer">
+    <div class="footer-links">
+        <a href="#" id="footer-contacto">Contacto</a>
+        <span>•</span>
+        <a href="#" id="footer-privacidad">Política de privacidad</a>
+        <span>•</span>
+        <a href="#" id="footer-terminos">Términos de uso</a>
+        <span>•</span>
+        <a href="#" id="footer-recicladores-link">Para recicladores</a>
+    </div>
+    <p class="footer-copyright">© 2026 RecirculaLima - Lima, Perú</p>
+</footer>
+</div>
+
+<div id="dash-ciudadano" class="hidden">
+<div class="dash-wrapper">
+
+  <aside class="dash-sidebar">
+    <div class="dash-logo"><img src="1.jpg" alt="logo" class="brand-logo-img"><span>RecirculaLima</span></div>
+    <nav class="dash-nav">
+      <a href="#" class="dash-link active" onclick="dashTab(event,'dc-home')">🏠 Inicio</a>
+      <a href="#" class="dash-link" onclick="dashTab(event,'dc-solicitar')">📦 Solicitar Recojo</a>
+      <a href="#" class="dash-link" onclick="dashTab(event,'dc-historial')">📋 Mis Recojos</a>
+      <a href="#" class="dash-link" onclick="dashTab(event,'dc-puntos')">💳 ReciPuntos</a>
+      <a href="#" class="dash-link" onclick="dashTab(event,'dc-mapa')">🗺️ Mapa</a>
+      <a href="#" class="dash-link" onclick="dashTab(event,'dc-perfil')">👤 Mi Perfil</a>
+    </nav>
+    <button class="dash-logout-btn" id="action-logout-trigger2">Cerrar sesión</button>
+  </aside>
+
+  <main class="dash-main">
+
+    <section id="dc-home" class="dash-tab active">
+      <div class="dash-topbar"><h2>¡Hola, <span id="dash-ciudadano-name"></span>! 👋</h2><span class="dash-date" id="dash-date-c"></span></div>
+      <div class="dash-cards-row">
+        <div class="dash-stat-card green"><div class="dsc-icon">💳</div><div><div class="dsc-val">120</div><div class="dsc-lbl">ReciPuntos</div></div></div>
+        <div class="dash-stat-card white"><div class="dsc-icon">♻️</div><div><div class="dsc-val">8</div><div class="dsc-lbl">Recojos realizados</div></div></div>
+        <div class="dash-stat-card white"><div class="dsc-icon">🌿</div><div><div class="dsc-val">14.5 kg</div><div class="dsc-lbl">Material reciclado</div></div></div>
+        <div class="dash-stat-card dark"><div class="dsc-icon">🏅</div><div><div class="dsc-val">Nivel 2</div><div class="dsc-lbl">Ciudadano Verde</div></div></div>
+      </div>
+      <div class="dash-row-2col">
+        <div class="dash-panel">
+          <h3>📍 Estado de tu último recojo</h3>
+          <div class="recojo-status-bar">
+            <div class="rsb-step done">📝<span>Publicado</span></div>
+            <div class="rsb-line done"></div>
+            <div class="rsb-step done">✅<span>Aceptado</span></div>
+            <div class="rsb-line done"></div>
+            <div class="rsb-step active">🚛<span>En camino</span></div>
+            <div class="rsb-line"></div>
+            <div class="rsb-step">📦<span>Completado</span></div>
+          </div>
+          <div class="reciclador-asignado">
+            <div class="rec-av">♻️</div>
+            <div><strong>Carlos Mendoza</strong><br><small>🗓️ Llega en ~12 min • 320m</small></div>
+            <button class="btn-small-green" onclick="showToast('💬 Chat con Carlos abierto','info')">Chat</button>
+          </div>
+        </div>
+        <div class="dash-panel">
+          <h3>🎁 Beneficios disponibles</h3>
+          <div class="benefit-list">
+            <div class="benefit-item"><span class="bi-icon">🍞</span><div><strong>Bodega La Esquina</strong><small>10% descuento</small></div><span class="bi-pts">150 pts</span><button class="btn-canjear" onclick="showToast('🎉 ¡Cupón generado!','success')">Canjear</button></div>
+            <div class="benefit-item"><span class="bi-icon">💊</span><div><strong>Farmacia BienSalud</strong><small>S/. 5 descuento</small></div><span class="bi-pts">200 pts</span><button class="btn-canjear" onclick="showToast('🎉 ¡Cupón generado!','success')">Canjear</button></div>
+            <div class="benefit-item"><span class="bi-icon">🍽️</span><div><strong>Rest. El Verde</strong><small>Menú gratis</small></div><span class="bi-pts">300 pts</span><button class="btn-canjear" onclick="showToast('🎉 ¡Cupón generado!','success')">Canjear</button></div>
+          </div>
+          <button class="btn-ver-mas" onclick="document.querySelector('#dash-ciudadano .dash-link:nth-child(4)').click()">Ver todos →</button>
+        </div>
+      </div>
+      <div class="dash-panel" style="margin-top:20px;">
+        <h3>🌱 Mi impacto ambiental</h3>
+        <div class="impact-row">
+          <div class="impact-item"><div class="ii-val">14.5 kg</div><div class="ii-lbl">Material reciclado</div></div>
+          <div class="impact-item"><div class="ii-val">8</div><div class="ii-lbl">Entregas validadas</div></div>
+          <div class="impact-item"><div class="ii-val">29 kg</div><div class="ii-lbl">CO₂ evitado</div></div>
+          <div class="impact-item"><div class="ii-val">3 🌳</div><div class="ii-lbl">Árboles equivalentes</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="dc-solicitar" class="dash-tab">
+      <div class="dash-topbar"><h2>📦 Solicitar Recojo</h2></div>
+      <div class="dash-panel" style="max-width:600px;">
+        <h3>Nueva solicitud de recojo</h3>
+        <p style="font-size:13px;color:var(--slate-text);margin-bottom:16px;">Completa los campos y un reciclador de tu zona recibirá la alerta.</p>
+        <div class="form-input-group" style="margin-bottom:12px;"><label>Tipo de residuo *</label>
+          <div class="material-chips">
+            <button class="chip" onclick="toggleChip(this)">🧴 Plástico</button>
+            <button class="chip" onclick="toggleChip(this)">📄 Papel</button>
+            <button class="chip" onclick="toggleChip(this)">📦 Cartón</button>
+            <button class="chip" onclick="toggleChip(this)">🍶 Vidrio</button>
+            <button class="chip" onclick="toggleChip(this)">🔩 Metal</button>
+          </div>
+        </div>
+        <div class="form-input-group" style="margin-bottom:12px;"><label>Tu dirección *</label><input type="text" placeholder="Ej. Jr. Libertad 120, Surco" id="sol-dir"></div>
+        <div class="form-double-row">
+          <div class="form-input-group flex-item"><label>Fecha preferida</label><input type="date" id="sol-fecha"></div>
+          <div class="form-input-group flex-item"><label>Horario preferido</label>
+            <select id="sol-hora"><option>Mañana (8am–12pm)</option><option>Tarde (1pm–5pm)</option><option>Noche (5pm–8pm)</option></select>
+          </div>
+        </div>
+        <div class="form-input-group" style="margin:12px 0;"><label>Foto del material (opcional)</label><input type="file" accept="image/*" style="padding:6px;font-size:12px;"></div>
+        <button class="btn-submit-auth" onclick="solicitarRecojo()">📢 Publicar Solicitud</button>
+      </div>
+    </section>
+
+    <section id="dc-historial" class="dash-tab">
+      <div class="dash-topbar"><h2>📋 Mis Recojos</h2></div>
+      <div class="dash-panel">
+        <table class="dash-table">
+          <thead><tr><th>Fecha</th><th>Materiales</th><th>Reciclador</th><th>Estado</th><th>Puntos</th></tr></thead>
+          <tbody>
+            <tr><td>20/06/2026</td><td>Plástico, Papel</td><td>Carlos M.</td><td><span class="badge-status en-proceso">En camino</span></td><td>—</td></tr>
+            <tr><td>15/06/2026</td><td>Cartón</td><td>Rosa C.</td><td><span class="badge-status completado">Completado</span></td><td>+30 pts</td></tr>
+            <tr><td>10/06/2026</td><td>Vidrio, Metal</td><td>Evans S.</td><td><span class="badge-status completado">Completado</span></td><td>+45 pts</td></tr>
+            <tr><td>05/06/2026</td><td>Papel</td><td>Carlos M.</td><td><span class="badge-status cancelado">Cancelado</span></td><td>—</td></tr>
+            <tr><td>01/06/2026</td><td>Plástico</td><td>Rosa C.</td><td><span class="badge-status completado">Completado</span></td><td>+25 pts</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="dc-puntos" class="dash-tab">
+      <div class="dash-topbar"><h2>💳 Mi Billetera Digital</h2></div>
+      <div class="dash-cards-row">
+        <div class="dash-stat-card green" style="flex:2;"><div class="dsc-icon" style="font-size:32px;">💳</div><div><div class="dsc-val" style="font-size:36px;">120</div><div class="dsc-lbl">ReciPuntos disponibles</div><small style="color:rgba(255,255,255,.6);">⚠️ 20 pts vencen en 7 días</small></div></div>
+        <div class="dash-stat-card white"><div class="dsc-icon">📈</div><div><div class="dsc-val">+195</div><div class="dsc-lbl">Ganados este mes</div></div></div>
+        <div class="dash-stat-card white"><div class="dsc-icon">🎁</div><div><div class="dsc-val">3</div><div class="dsc-lbl">Canjes realizados</div></div></div>
+      </div>
+      <div class="dash-row-2col" style="margin-top:20px;">
+        <div class="dash-panel">
+          <h3>📜 Historial de movimientos</h3>
+          <table class="dash-table">
+            <thead><tr><th>Fecha</th><th>Detalle</th><th>Puntos</th></tr></thead>
+            <tbody>
+              <tr><td>15/06</td><td>Entrega Cartón — Carlos M.</td><td class="pts-pos">+30</td></tr>
+              <tr><td>10/06</td><td>Entrega Vidrio+Metal — Evans S.</td><td class="pts-pos">+45</td></tr>
+              <tr><td>08/06</td><td>Canje: Bodega La Esquina</td><td class="pts-neg">-150</td></tr>
+              <tr><td>01/06</td><td>Entrega Plástico — Rosa C.</td><td class="pts-pos">+25</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="dash-panel">
+          <h3>🎁 Catálogo de beneficios</h3>
+          <div class="benefit-list">
+            <div class="benefit-item"><span class="bi-icon">🍞</span><div><strong>Bodega La Esquina</strong><small>10% descuento</small></div><span class="bi-pts">150 pts</span><button class="btn-canjear" onclick="showToast('🎉 ¡Cupón generado!','success')">Canjear</button></div>
+            <div class="benefit-item"><span class="bi-icon">💊</span><div><strong>Farmacia BienSalud</strong><small>S/. 5 descuento</small></div><span class="bi-pts">200 pts</span><button class="btn-canjear" onclick="showToast('⚠️ Puntos insuficientes','warning')">Canjear</button></div>
+            <div class="benefit-item"><span class="bi-icon">☕</span><div><strong>Café Recicla & Toma</strong><small>Café gratis</small></div><span class="bi-pts">80 pts</span><button class="btn-canjear" onclick="showToast('🎉 ¡Cupón generado!','success')">Canjear</button></div>
+            <div class="benefit-item"><span class="bi-icon">🍽️</span><div><strong>Rest. El Verde</strong><small>Menú gratis</small></div><span class="bi-pts">300 pts</span><button class="btn-canjear" onclick="showToast('⚠️ Puntos insuficientes','warning')">Canjear</button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="dc-mapa" class="dash-tab">
+      <div class="dash-topbar"><h2>🗺️ Recicladores cercanos</h2></div>
+      <div class="dash-row-2col">
+        <div class="dash-panel" style="background:#1A2218;min-height:340px;position:relative;overflow:hidden;">
+          <div style="position:absolute;inset:0;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(6,1fr);">
+            <div id="mapgrid"></div>
+          </div>
+          <div style="position:absolute;top:50%;left:48%;font-size:22px;transform:translate(-50%,-50%);">📍<br><small style="color:var(--brand-light);font-size:9px;">Tú</small></div>
+          <div style="position:absolute;top:35%;left:60%;font-size:18px;">♻️<br><small style="color:#fff;font-size:9px;">Carlos</small></div>
+          <div style="position:absolute;top:65%;left:30%;font-size:18px;">🌿<br><small style="color:#fff;font-size:9px;">Rosa</small></div>
+          <div style="position:absolute;top:25%;left:25%;font-size:18px;">🚛<br><small style="color:#fff;font-size:9px;">Evans</small></div>
+          <div style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.5);padding:6px 14px;border-radius:20px;font-size:11px;color:#fff;">3 recicladores activos en tu zona</div>
+        </div>
+        <div class="dash-panel">
+          <h3>Recicladores disponibles</h3>
+          <div class="recycler-list">
+            <div class="recycler-item" onclick="showToast('✅ Solicitud enviada a Carlos M.','success')"><div class="recycler-avatar">♻️</div><div class="recycler-info"><h4>Carlos Mendoza</h4><p>🗓️ Hoy 2pm–5pm • 320m</p><span class="recycler-badge">✅ Verificado • ⭐ 4.9</span></div><button class="btn-contact-recycler">Contactar</button></div>
+            <div class="recycler-item" onclick="showToast('✅ Solicitud enviada a Rosa C.','success')"><div class="recycler-avatar">🌿</div><div class="recycler-info"><h4>Rosa Castillo</h4><p>🗓️ Hoy 3pm–6pm • 480m</p><span class="recycler-badge">✅ Verificada • ⭐ 4.7</span></div><button class="btn-contact-recycler">Contactar</button></div>
+            <div class="recycler-item" onclick="showToast('✅ Solicitud enviada a Evans S.','success')"><div class="recycler-avatar">🚛</div><div class="recycler-info"><h4>Evans Soto</h4><p>🗓️ Mañana 8am–11am • 490m</p><span class="recycler-badge">✅ Verificado • ⭐ 4.8</span></div><button class="btn-contact-recycler">Contactar</button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="dc-perfil" class="dash-tab">
+      <div class="dash-topbar"><h2>👤 Mi Perfil</h2></div>
+      <div class="dash-row-2col">
+        <div class="dash-panel">
+          <div class="perfil-header"><div class="perfil-avatar">👤</div><div><h3 id="dc-perfil-name"></h3><small style="color:var(--slate-text);">Ciudadano Verificado</small></div></div>
+          <div class="form-input-group" style="margin-top:16px;"><label>Nombre completo</label><input type="text" value="Carlos López" id="pf-c-nombre"></div>
+          <div class="form-input-group" style="margin-top:10px;"><label>Celular</label><input type="tel" value="999888777" id="pf-c-cel"></div>
+          <div class="form-input-group" style="margin-top:10px;"><label>Correo electrónico</label><input type="email" value="carlos@correo.com" id="pf-c-email" disabled style="background:#f1f5f9;"></div>
+          <button class="btn-submit-auth" style="margin-top:14px;" onclick="showToast('✅ Perfil actualizado correctamente','success')">Guardar cambios</button>
+        </div>
+        <div class="dash-panel">
+          <h3>📊 Resumen de actividad</h3>
+          <div class="impact-row" style="flex-wrap:wrap;gap:12px;">
+            <div class="impact-item"><div class="ii-val">8</div><div class="ii-lbl">Recojos</div></div>
+            <div class="impact-item"><div class="ii-val">120</div><div class="ii-lbl">ReciPuntos</div></div>
+            <div class="impact-item"><div class="ii-val">14.5 kg</div><div class="ii-lbl">Reciclado</div></div>
+            <div class="impact-item"><div class="ii-val">Nivel 2</div><div class="ii-lbl">Ciudadano Verde</div></div>
+          </div>
+          <h3 style="margin-top:20px;">⚙️ Configuración</h3>
+          <div class="config-row"><span>🔔 Notificaciones de recojo</span><label class="toggle"><input type="checkbox" checked><span class="slider"></span></label></div>
+          <div class="config-row"><span>📍 Alertas de recicladores cercanos</span><label class="toggle"><input type="checkbox" checked><span class="slider"></span></label></div>
+          <div class="config-row"><span>⏰ Avisos de ReciPuntos por vencer</span><label class="toggle"><input type="checkbox" checked><span class="slider"></span></label></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</div>
+
+<div id="dash-reciclador" class="hidden">
+<div class="dash-wrapper">
+  <aside class="dash-sidebar">
+    <div class="dash-logo"><img src="1.jpg" alt="logo" class="brand-logo-img"><span>RecirculaLima</span></div>
+    <nav class="dash-nav">
+      <a href="#" class="dash-link active" onclick="dashTab(event,'dr-home')">🏠 Dashboard</a>
+      <a href="#" class="dash-link" onclick="dashTab(event,'dr-solicitudes')">📋 Solicitudes</a>
+      <a href="#" class="dash-link" onclick="dashTab(event,'dr-ruta')">🗺️ Mi Ruta</a>
+      <a href="#" class="dash-link" onclick="dashTab(event,'dr-historial')">📊 Historial</a>
+      <a href="#" class="dash-link" onclick="dashTab(event,'dr-qr')">🔲 Mi Código QR</a>
+      <a href="#" class="dash-link" onclick="dashTab(event,'dr-perfil')">👤 Mi Perfil</a>
+    </nav>
+    <button class="dash-logout-btn" id="action-logout-trigger3">Cerrar sesión</button>
+  </aside>
+  <main class="dash-main">
+
+    <section id="dr-home" class="dash-tab active">
+      <div class="dash-topbar"><h2>Mi jornada, <span id="dash-reciclador-name"></span> 🚛</h2><span class="dash-date" id="dash-date-r"></span></div>
+      <div class="dash-cards-row">
+        <div class="dash-stat-card green"><div class="dsc-icon">⚖️</div><div><div class="dsc-val">18.5 kg</div><div class="dsc-lbl">Recolectados hoy</div></div></div>
+        <div class="dash-stat-card white"><div class="dsc-icon">📦</div><div><div class="dsc-val">3</div><div class="dsc-lbl">Recojos completados</div></div></div>
+        <div class="dash-stat-card white"><div class="dsc-icon">⏳</div><div><div class="dsc-val">2</div><div class="dsc-lbl">Pendientes hoy</div></div></div>
+        <div class="dash-stat-card dark"><div class="dsc-icon">⭐</div><div><div class="dsc-val">4.9</div><div class="dsc-lbl">Calificación promedio</div></div></div>
+      </div>
+      <div class="dash-row-2col" style="margin-top:20px;">
+        <div class="dash-panel">
+          <h3>📦 Solicitudes activas</h3>
+          <div class="sol-list">
+            <div class="sol-item"><div class="sol-ico">🧴</div><div><strong>Jr. Libertad 120</strong><p>Rosa C. • Plástico • 3 kg est.</p><small>🕐 Hoy 3pm–5pm • 420m</small></div><button class="btn-small-green" onclick="showToast('✅ Recojo aceptado. Ciudadano notificado.','success')">Aceptar</button></div>
+            <div class="sol-item"><div class="sol-ico">📦</div><div><strong>Av. Los Próceres 88</strong><p>Juan A. • Cartón • 5 kg est.</p><small>🕐 Hoy 4pm–6pm • 650m</small></div><button class="btn-small-green" onclick="showToast('✅ Recojo aceptado. Ciudadano notificado.','success')">Aceptar</button></div>
+          </div>
+        </div>
+        <div class="dash-panel">
+          <h3>📈 Meta de hoy</h3>
+          <div style="margin:10px 0;">
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span>18.5 kg / 30 kg</span><span style="color:var(--accent-green);font-weight:700;">62%</span></div>
+            <div style="background:#E2E8F0;height:12px;border-radius:8px;overflow:hidden;"><div style="background:var(--primary-dark);height:100%;width:62%;border-radius:8px;transition:width .6s;"></div></div>
+          </div>
+          <div class="impact-row" style="margin-top:16px;">
+            <div class="impact-item"><div class="ii-val">186 kg</div><div class="ii-lbl">Total mes</div></div>
+            <div class="impact-item"><div class="ii-val">42</div><div class="ii-lbl">Recojos mes</div></div>
+            <div class="impact-item"><div class="ii-val">98%</div><div class="ii-lbl">Éxito</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="dr-solicitudes" class="dash-tab">
+      <div class="dash-topbar"><h2>📋 Solicitudes disponibles</h2></div>
+      <div class="dash-panel">
+        <div class="sol-list">
+          <div class="sol-item"><div class="sol-ico">🧴</div><div><strong>Jr. Libertad 120, Surco</strong><p>Rosa C. • Plástico • 3 kg est. • 🕐 Hoy 3pm–5pm</p><small>📍 420m de tu ubicación</small></div><button class="btn-small-green" onclick="showToast('✅ Recojo aceptado','success')">Aceptar</button></div>
+          <div class="sol-item"><div class="sol-ico">📦</div><div><strong>Av. Los Próceres 88, Surco</strong><p>Juan A. • Cartón • 5 kg est. • 🕐 Hoy 4pm–6pm</p><small>📍 650m de tu ubicación</small></div><button class="btn-small-green" onclick="showToast('✅ Recojo aceptado','success')">Aceptar</button></div>
+          <div class="sol-item"><div class="sol-ico">📄</div><div><strong>Ca. Los Pinos 55, Miraflores</strong><p>Ana R. • Papel • 2 kg est. • 🕐 Mañana 8am–10am</p><small>📍 1.1km de tu ubicación</small></div><button class="btn-small-green" onclick="showToast('✅ Recojo aceptado','success')">Aceptar</button></div>
+          <div class="sol-item"><div class="sol-ico">🍶</div><div><strong>Jr. Tacna 210, Lima Centro</strong><p>Pedro V. • Vidrio • 4 kg est. • 🕐 Mañana 10am–12pm</p><small>📍 1.4km de tu ubicación</small></div><button class="btn-small-green" onclick="showToast('✅ Recojo aceptado','success')">Aceptar</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="dr-ruta" class="dash-tab">
+      <div class="dash-topbar"><h2>🗺️ Mi Ruta del Día</h2></div>
+      <div class="dash-row-2col">
+        <div class="dash-panel" style="background:#1A2218;min-height:320px;position:relative;overflow:hidden;">
+          <div style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);padding:6px 14px;border-radius:20px;font-size:11px;color:var(--brand-light);">Ruta activa — 3 paradas</div>
+          <div style="position:absolute;top:50%;left:45%;font-size:20px;">🚛<br><small style="color:var(--brand-light);font-size:9px;">Tú</small></div>
+          <div style="position:absolute;top:30%;left:65%;font-size:16px;">📍1</div>
+          <div style="position:absolute;top:60%;left:25%;font-size:16px;">📍2</div>
+          <div style="position:absolute;top:20%;left:30%;font-size:16px;">📍3</div>
+        </div>
+        <div class="dash-panel">
+          <h3>Paradas pendientes</h3>
+          <div class="route-steps">
+            <div class="route-step"><div class="step-dot" style="background:#94A3B8;">✓</div><div class="step-info"><h4>Av. Los Próceres 340 — Completada</h4><p>María G. • Plástico • 2 kg</p></div></div>
+            <div class="route-step"><div class="step-dot current">2</div><div class="step-info"><h4>Jr. Libertad 120 — En camino</h4><p>Rosa C. • Papel • 3 kg est. • 420m</p></div></div>
+            <div class="route-step"><div class="step-dot" style="background:#E2E8F0;color:#94A3B8;">3</div><div class="step-info"><h4>Ca. Los Pinos 55 — Pendiente</h4><p>Juan A. • Cartón • 1.5 kg est. • 380m</p></div></div>
+          </div>
+          <button class="btn-iniciar-nav" onclick="showToast('🗺️ Navegando hacia Jr. Libertad 120','info')">Iniciar navegación →</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="dr-historial" class="dash-tab">
+      <div class="dash-topbar"><h2>📊 Historial de recojos</h2></div>
+      <div class="dash-cards-row" style="margin-bottom:20px;">
+        <div class="dash-stat-card green"><div class="dsc-icon">📦</div><div><div class="dsc-val">42</div><div class="dsc-lbl">Recojos este mes</div></div></div>
+        <div class="dash-stat-card white"><div class="dsc-icon">⚖️</div><div><div class="dsc-val">186 kg</div><div class="dsc-lbl">Material recolectado</div></div></div>
+        <div class="dash-stat-card white"><div class="dsc-icon">✅</div><div><div class="dsc-val">98%</div><div class="dsc-lbl">Tasa de éxito</div></div></div>
+      </div>
+      <div class="dash-panel">
+        <table class="dash-table">
+          <thead><tr><th>Fecha</th><th>Ciudadano</th><th>Material</th><th>Peso</th><th>Estado</th><th>Calificación</th></tr></thead>
+          <tbody>
+            <tr><td>20/06</td><td>Rosa C.</td><td>Plástico</td><td>3 kg</td><td><span class="badge-status en-proceso">En proceso</span></td><td>—</td></tr>
+            <tr><td>15/06</td><td>Juan A.</td><td>Cartón</td><td>5 kg</td><td><span class="badge-status completado">Completado</span></td><td>⭐⭐⭐⭐⭐</td></tr>
+            <tr><td>10/06</td><td>Ana R.</td><td>Papel</td><td>2 kg</td><td><span class="badge-status completado">Completado</span></td><td>⭐⭐⭐⭐⭐</td></tr>
+            <tr><td>05/06</td><td>Pedro V.</td><td>Vidrio</td><td>4 kg</td><td><span class="badge-status completado">Completado</span></td><td>⭐⭐⭐⭐</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="dr-qr" class="dash-tab">
+      <div class="dash-topbar"><h2>🔲 Mi Código QR de Identificación</h2></div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;">
+        <div class="dash-panel" style="text-align:center;max-width:320px;">
+          <p style="font-size:13px;color:var(--slate-text);margin-bottom:16px;">Muestra este código a ciudadanos y centros de acopio para verificar tu identidad.</p>
+          <div style="background:#F1F5F9;padding:20px;border-radius:12px;display:inline-block;margin-bottom:14px;"><div id="dr-qr-display"></div></div>
+          <div style="font-size:12px;background:#F8FAFC;padding:8px;border-radius:6px;margin-bottom:14px;">TOKEN: <span id="dr-qr-token">—</span></div>
+          <button class="btn-refresh-qr" onclick="genQRReciclador()">🔄 Regenerar QR</button>
+          <p style="font-size:11px;color:var(--slate-text);margin-top:10px;">✅ Disponible sin conexión (guardado en caché)</p>
+        </div>
+        <div class="dash-panel" style="flex:1;min-width:220px;">
+          <h3>Tu información verificada</h3>
+          <div class="perfil-header" style="margin:14px 0;"><div class="perfil-avatar">🚛</div><div><strong id="dr-qr-name"></strong><br><small style="color:var(--slate-text);">Reciclador Independiente</small><br><span class="recycler-badge" style="margin-top:4px;">✅ Cuenta verificada</span></div></div>
+          <div class="impact-row"><div class="impact-item"><div class="ii-val">42</div><div class="ii-lbl">Recojos</div></div><div class="impact-item"><div class="ii-val">⭐ 4.9</div><div class="ii-lbl">Calificación</div></div><div class="impact-item"><div class="ii-val">Surco</div><div class="ii-lbl">Zona</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="dr-perfil" class="dash-tab">
+      <div class="dash-topbar"><h2>👤 Mi Perfil</h2></div>
+      <div class="dash-row-2col">
+        <div class="dash-panel">
+          <div class="perfil-header"><div class="perfil-avatar">🚛</div><div><h3 id="dr-perfil-name"></h3><small>Reciclador Independiente • Surco</small></div></div>
+          <div class="form-input-group" style="margin-top:16px;"><label>Nombre completo</label><input type="text" value="Evans Soto"></div>
+          <div class="form-input-group" style="margin-top:10px;"><label>Celular</label><input type="tel" value="987654321"></div>
+          <div class="form-input-group" style="margin-top:10px;"><label>Distrito de cobertura</label><select><option selected>Surco</option><option>Miraflores</option><option>Los Olivos</option><option>La Molina</option></select></div>
+          <div class="form-input-group" style="margin-top:10px;"><label>Asociación</label><input type="text" placeholder="Dejar vacío si es independiente"></div>
+          <button class="btn-submit-auth" style="margin-top:14px;" onclick="showToast('✅ Perfil actualizado','success')">Guardar cambios</button>
+        </div>
+        <div class="dash-panel">
+          <h3>⚙️ Configuración</h3>
+          <div class="config-row"><span>🔔 Alertas de nuevas solicitudes</span><label class="toggle"><input type="checkbox" checked><span class="slider"></span></label></div>
+          <div class="config-row"><span>📍 Alertas de proximidad</span><label class="toggle"><input type="checkbox" checked><span class="slider"></span></label></div>
+          <div class="config-row"><span>💬 Mensajes de ciudadanos</span><label class="toggle"><input type="checkbox" checked><span class="slider"></span></label></div>
+          <h3 style="margin-top:20px;">📊 Estadísticas del mes</h3>
+          <div class="impact-row" style="margin-top:12px;flex-wrap:wrap;">
+            <div class="impact-item"><div class="ii-val">42</div><div class="ii-lbl">Recojos</div></div>
+            <div class="impact-item"><div class="ii-val">186 kg</div><div class="ii-lbl">Recolectado</div></div>
+            <div class="impact-item"><div class="ii-val">⭐ 4.9</div><div class="ii-lbl">Calificación</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</div>
+
+<div id="dash-admin" class="hidden">
+<div class="dash-wrapper">
+  <aside class="dash-sidebar">
+    <div class="dash-logo"><img src="1.jpg" alt="logo" class="brand-logo-img"><span>RecirculaLima</span></div>
+    <nav class="dash-nav">
+      <a href="#" class="dash-link active" onclick="dashTab(event,'da-home')">🏠 Panel Central</a>
+      <a href="#" class="dash-link" onclick="dashTab(event,'da-transacciones')">💰 Transacciones</a>
+      <a href="#" class="dash-link" onclick="dashTab(event,'da-inventario')">📦 Inventario</a>
+      <a href="#" class="dash-link" onclick="dashTab(event,'da-recicladores')">🚛 Recicladores</a>
+      <a href="#" class="dash-link" onclick="dashTab(event,'da-precios')">📈 Precios mercado</a>
+      <a href="#" class="dash-link" onclick="dashTab(event,'da-perfil')">🏢 Perfil del Centro</a>
+    </nav>
+    <button class="dash-logout-btn" id="action-logout-trigger4">Cerrar sesión</button>
+  </aside>
+  <main class="dash-main">
+
+    <section id="da-home" class="dash-tab active">
+      <div class="dash-topbar"><h2>Centro de Acopio — <span id="dash-admin-name"></span> 🏭</h2><span class="dash-date" id="dash-date-a"></span></div>
+      <div class="dash-cards-row">
+        <div class="dash-stat-card green"><div class="dsc-icon">⚖️</div><div><div class="dsc-val">1,240 kg</div><div class="dsc-lbl">Material este mes</div></div></div>
+        <div class="dash-stat-card white"><div class="dsc-icon">💰</div><div><div class="dsc-val">S/. 3,850</div><div class="dsc-lbl">Pagado a recicladores</div></div></div>
+        <div class="dash-stat-card white"><div class="dsc-icon">🚛</div><div><div class="dsc-val">28</div><div class="dsc-lbl">Recicladores atendidos</div></div></div>
+        <div class="dash-stat-card dark"><div class="dsc-icon">📊</div><div><div class="dsc-val">S/. 5,200</div><div class="dsc-lbl">Ganancia estimada</div></div></div>
+      </div>
+      <div class="dash-row-2col" style="margin-top:20px;">
+        <div class="dash-panel">
+          <h3>🔔 Recicladores en camino</h3>
+          <div class="sol-list">
+            <div class="sol-item"><div class="sol-ico">🚛</div><div><strong>Evans Soto</strong><p>Plástico + Papel • ~8 kg est.</p><small>🕐 Llega en ~15 min</small></div><span class="badge-status en-proceso">En camino</span></div>
+            <div class="sol-item"><div class="sol-ico">🌿</div><div><strong>Rosa Castillo</strong><p>Cartón • ~12 kg est.</p><small>🕐 Llega en ~30 min</small></div><span class="badge-status en-proceso">En camino</span></div>
+          </div>
+        </div>
+        <div class="dash-panel">
+          <h3>📊 Inventario actual</h3>
+          <div class="inv-row"><span>🧴 Plástico</span><div class="inv-bar"><div style="width:65%;background:#3B82F6;"></div></div><span>320 kg</span></div>
+          <div class="inv-row"><span>📄 Papel</span><div class="inv-bar"><div style="width:40%;background:#10B981;"></div></div><span>195 kg</span></div>
+          <div class="inv-row"><span>📦 Cartón</span><div class="inv-bar"><div style="width:55%;background:#F59E0B;"></div></div><span>270 kg</span></div>
+          <div class="inv-row"><span>🍶 Vidrio</span><div class="inv-bar"><div style="width:20%;background:#8B5CF6;"></div></div><span>98 kg</span></div>
+          <div class="inv-row"><span>🔩 Metal</span><div class="inv-bar"><div style="width:30%;background:#EF4444;"></div></div><span>148 kg</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="da-transacciones" class="dash-tab">
+      <div class="dash-topbar"><h2>💰 Registro de Transacciones</h2></div>
+      <div class="dash-row-2col">
+        <div class="dash-panel" style="max-width:420px;">
+          <h3>Nueva transacción</h3>
+          <div class="form-input-group" style="margin-bottom:10px;"><label>Reciclador</label><select><option>Evans Soto</option><option>Rosa Castillo</option><option>Carlos Mendoza</option></select></div>
+          <div class="form-input-group" style="margin-bottom:10px;"><label>Tipo de material</label><select><option>Plástico</option><option>Papel</option><option>Cartón</option><option>Vidrio</option><option>Metal</option></select></div>
+          <div class="form-double-row">
+            <div class="form-input-group flex-item"><label>Peso (kg)</label><input type="number" placeholder="Ej. 15.5" min="0.1"></div>
+            <div class="form-input-group flex-item"><label>Monto pagado (S/.)</label><input type="number" placeholder="Ej. 46.50" min="0"></div>
+          </div>
+          <div class="form-input-group" style="margin-top:10px;"><label>Calidad del material</label>
+            <div style="display:flex;gap:8px;margin-top:4px;">
+              <button class="chip" onclick="toggleChip(this)">⭐ Baja</button>
+              <button class="chip active" onclick="toggleChip(this)">⭐⭐ Media</button>
+              <button class="chip" onclick="toggleChip(this)">⭐⭐⭐ Alta</button>
+            </div>
+          </div>
+          <button class="btn-submit-auth" style="margin-top:14px;" onclick="showToast('✅ Transacción registrada correctamente','success')">Registrar transacción</button>
+        </div>
+        <div class="dash-panel">
+          <h3>📋 Últimas transacciones</h3>
+          <table class="dash-table">
+            <thead><tr><th>Fecha</th><th>Reciclador</th><th>Material</th><th>Peso</th><th>Monto</th></tr></thead>
+            <tbody>
+              <tr><td>20/06</td><td>Evans S.</td><td>Plástico</td><td>15 kg</td><td>S/. 45</td></tr>
+              <tr><td>19/06</td><td>Rosa C.</td><td>Cartón</td><td>22 kg</td><td>S/. 33</td></tr>
+              <tr><td>18/06</td><td>Carlos M.</td><td>Papel</td><td>18 kg</td><td>S/. 27</td></tr>
+              <tr><td>17/06</td><td>Evans S.</td><td>Metal</td><td>8 kg</td><td>S/. 48</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="da-inventario" class="dash-tab">
+      <div class="dash-topbar"><h2>📦 Inventario del Centro</h2></div>
+      <div class="dash-cards-row" style="margin-bottom:20px;">
+        <div class="dash-stat-card green"><div class="dsc-icon">⚖️</div><div><div class="dsc-val">1,031 kg</div><div class="dsc-lbl">Total disponible</div></div></div>
+        <div class="dash-stat-card white"><div class="dsc-icon">📈</div><div><div class="dsc-val">S/. 5,200</div><div class="dsc-lbl">Valor estimado</div></div></div>
+      </div>
+      <div class="dash-panel">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><h3>Detalle por material</h3><button class="btn-small-green" onclick="showToast('📄 Reporte generado y listo para descargar','success')">📄 Exportar reporte</button></div>
+        <table class="dash-table">
+          <thead><tr><th>Material</th><th>Stock (kg)</th><th>Precio ref. (S/./kg)</th><th>Valor estimado</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>🧴 Plástico</td><td>320 kg</td><td>S/. 1.50</td><td>S/. 480</td><td><span class="badge-status completado">Disponible</span></td></tr>
+            <tr><td>📄 Papel</td><td>195 kg</td><td>S/. 0.80</td><td>S/. 156</td><td><span class="badge-status completado">Disponible</span></td></tr>
+            <tr><td>📦 Cartón</td><td>270 kg</td><td>S/. 0.60</td><td>S/. 162</td><td><span class="badge-status completado">Disponible</span></td></tr>
+            <tr><td>🍶 Vidrio</td><td>98 kg</td><td>S/. 0.30</td><td>S/. 29.4</td><td><span class="badge-status completado">Disponible</span></td></tr>
+            <tr><td>🔩 Metal</td><td>148 kg</td><td>S/. 3.20</td><td>S/. 473.6</td><td><span class="badge-status completado">Disponible</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="da-recicladores" class="dash-tab">
+      <div class="dash-topbar"><h2>🚛 Recicladores Proveedores</h2></div>
+      <div class="dash-panel">
+        <div class="recycler-list">
+          <div class="recycler-item"><div class="recycler-avatar">🚛</div><div class="recycler-info"><h4>Evans Soto</h4><p>Independiente • Surco • 42 entregas</p><span class="recycler-badge">⭐ 4.9 Calidad • ✅ Verificado</span></div><button class="btn-contact-recycler" onclick="showToast('📋 Perfil de Evans Soto cargado','info')">Ver perfil</button></div>
+          <div class="recycler-item"><div class="recycler-avatar">🌿</div><div class="recycler-info"><h4>Rosa Castillo</h4><p>Asociación Verde Lima • Miraflores • 38 entregas</p><span class="recycler-badge">⭐ 4.7 Calidad • ✅ Verificada</span></div><button class="btn-contact-recycler" onclick="showToast('📋 Perfil de Rosa Castillo cargado','info')">Ver perfil</button></div>
+          <div class="recycler-item"><div class="recycler-avatar">♻️</div><div class="recycler-info"><h4>Carlos Mendoza</h4><p>Independiente • Los Olivos • 29 entregas</p><span class="recycler-badge">⭐ 4.8 Calidad • ✅ Verificado</span></div><button class="btn-contact-recycler" onclick="showToast('📋 Perfil de Carlos Mendoza cargado','info')">Ver perfil</button></div>
+          <div class="recycler-item"><div class="recycler-avatar">🔩</div><div class="recycler-info"><h4>Pedro Vargas</h4><p>Reciclador Nuevo • Surco • 3 entregas</p><span class="recycler-badge">⭐ Sin calificación aún</span></div><button class="btn-contact-recycler" onclick="showToast('📋 Perfil de Pedro Vargas cargado','info')">Ver perfil</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="da-precios" class="dash-tab">
+      <div class="dash-topbar"><h2>📈 Precios de Mercado</h2><small style="color:var(--slate-text);font-size:12px;">Actualizado: Hoy 8:00am</small></div>
+      <div class="dash-panel">
+        <table class="dash-table">
+          <thead><tr><th>Material</th><th>Precio compra (S/./kg)</th><th>Precio venta (S/./kg)</th><th>Variación</th><th>Tendencia</th></tr></thead>
+          <tbody>
+            <tr><td>🧴 Plástico PET</td><td>S/. 1.50</td><td>S/. 2.20</td><td class="pts-pos">+0.10</td><td>📈</td></tr>
+            <tr><td>📄 Papel blanco</td><td>S/. 0.80</td><td>S/. 1.30</td><td class="pts-neg">-0.05</td><td>📉</td></tr>
+            <tr><td>📦 Cartón</td><td>S/. 0.60</td><td>S/. 1.00</td><td class="pts-pos">+0.02</td><td>📈</td></tr>
+            <tr><td>🍶 Vidrio</td><td>S/. 0.30</td><td>S/. 0.55</td><td>0.00</td><td>➡️</td></tr>
+            <tr><td>🔩 Cobre</td><td>S/. 3.20</td><td>S/. 4.80</td><td class="pts-pos">+0.20</td><td>📈</td></tr>
+            <tr><td>🔩 Aluminio</td><td>S/. 2.10</td><td>S/. 3.40</td><td class="pts-neg">-0.10</td><td>📉</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:11px;color:#94A3B8;margin-top:12px;font-style:italic;">Precios referenciales del mercado de Lima Metropolitana. Fuente: Bolsa de residuos MINAM.</p>
+      </div>
+    </section>
+
+    <section id="da-perfil" class="dash-tab">
+      <div class="dash-topbar"><h2>🏢 Perfil del Centro</h2></div>
+      <div class="dash-row-2col">
+        <div class="dash-panel">
+          <div class="perfil-header"><div class="perfil-avatar">🏭</div><div><h3>Centro Verde Lima</h3><small>RUC: 20512345678</small><br><span class="recycler-badge" style="margin-top:4px;">✅ Activo y verificado</span></div></div>
+          <div class="form-input-group" style="margin-top:16px;"><label>Nombre del centro</label><input type="text" value="Centro Verde Lima"></div>
+          <div class="form-input-group" style="margin-top:10px;"><label>Dirección</label><input type="text" value="Av. Separadora Industrial 140, Ate"></div>
+          <div class="form-input-group" style="margin-top:10px;"><label>Teléfono del centro</label><input type="tel" value="01-456-7890"></div>
+          <div class="form-input-group" style="margin-top:10px;"><label>RUC</label><input type="text" value="20512345678" disabled style="background:#f1f5f9;"></div>
+          <button class="btn-submit-auth" style="margin-top:14px;" onclick="showToast('✅ Perfil del centro actualizado','success')">Guardar cambios</button>
+        </div>
+        <div class="dash-panel">
+          <h3>⚙️ Configuración</h3>
+          <div class="config-row"><span>🔔 Alertas de recicladores en camino</span><label class="toggle"><input type="checkbox" checked><span class="slider"></span></label></div>
+          <div class="config-row"><span>📊 Reporte semanal automático</span><label class="toggle"><input type="checkbox" checked><span class="slider"></span></label></div>
+          <div class="config-row"><span>📈 Alertas de cambio de precio</span><label class="toggle"><input type="checkbox"><span class="slider"></span></label></div>
+          <h3 style="margin-top:20px;">📊 Resumen del mes</h3>
+          <div class="impact-row" style="margin-top:12px;flex-wrap:wrap;">
+            <div class="impact-item"><div class="ii-val">1,240 kg</div><div class="ii-lbl">Recibido</div></div>
+            <div class="impact-item"><div class="ii-val">28</div><div class="ii-lbl">Recicladores</div></div>
+            <div class="impact-item"><div class="ii-val">S/. 5,200</div><div class="ii-lbl">Ganancia</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</div>
+
+<div id="auth-system-overlay" class="modal-shadow-overlay hidden">
+    <div class="figma-auth-container">
+        <button class="close-modal-btn" id="close-auth-modal">&times;</button>
+        <div class="auth-brand-sidebar">
+            <img src="1.jpg" alt="Logo RecirculaLima" class="sidebar-logo">
+            <p class="sidebar-pre">SISTEMA INTEGRAL</p>
+            <h2 class="sidebar-heading">RecirculaLima</h2>
+            <p class="sidebar-paragraph">Accede a tu cuenta institucional o ciudadana para reportar métricas de valorización o registrar transferencias de material.</p>
+        </div>
+        <div class="auth-form-workspace">
+            <div class="auth-mode-tabs">
+                <button class="auth-mode-tab active" id="tab-login">Iniciar Sesión</button>
+                <button class="auth-mode-tab" id="tab-register">Registrar Cuenta</button>
+            </div>
+            <div class="role-tabs-selector">
+                <button class="tab-selector-item active" data-role="ciudadano">Ciudadano</button>
+                <button class="tab-selector-item" data-role="reciclador">Reciclador</button>
+                <button class="tab-selector-item" data-role="administrador">Admin. Acopio</button>
+            </div>
+            <div class="context-info-banner">
+                <h4 id="ctx-title">Acceso Ciudadano</h4>
+                <p id="ctx-desc">Ingresa tus credenciales para ver tus ReciPuntos.</p>
+            </div>
+
+            <form id="form-login" class="auth-core-form">
+                <div class="form-input-group">
+                    <label for="login-email">Correo electrónico</label>
+                    <input type="email" id="login-email" placeholder="nombre@correo.com">
+                    <span class="field-error-msg" id="err-le">Ingresa un correo válido.</span>
+                </div>
+                <div class="form-input-group">
+                    <label for="login-pass">Contraseña</label>
+                    <input type="password" id="login-pass" placeholder="••••••••">
+                    <span class="field-error-msg" id="err-lp">La contraseña no puede estar vacía.</span>
+                </div>
+                <div class="remember-row">
+                    <input type="checkbox" id="chk-remember">
+                    <label for="chk-remember">Recordarme en este dispositivo</label>
+                </div>
+                <button type="submit" class="btn-submit-auth" id="btn-login-txt">Iniciar Sesión</button>
+                <button type="button" class="forgot-link" id="btn-forgot">¿Olvidaste tu contraseña?</button>
+                <p class="auth-switch-text">¿Eres nuevo? <button type="button" id="sw-to-reg">Crea tu cuenta aquí</button></p>
+            </form>
+
+            <form id="form-register" class="auth-core-form hidden">
+                <div class="form-input-group">
+                    <label for="reg-name">Nombres Completos</label>
+                    <input type="text" id="reg-name" placeholder="Ej. Carlos Mendoza">
+                    <span class="field-error-msg" id="err-rn">Este campo es obligatorio.</span>
+                </div>
+                <div class="form-double-row">
+                    <div class="form-input-group flex-item" id="dni-wrap">
+                        <label for="reg-dni">DNI (8 dígitos)</label>
+                        <input type="text" id="reg-dni" placeholder="12345678" maxlength="8" inputmode="numeric">
+                        <span class="field-error-msg" id="err-rd">El DNI debe contener exactamente 8 números.</span>
+                    </div>
+                    <div class="form-input-group flex-item">
+                        <label for="reg-email">Correo electrónico</label>
+                        <input type="email" id="reg-email" placeholder="nombre@correo.com">
+                        <span class="field-error-msg" id="err-re">Correo inválido.</span>
+                    </div>
+                </div>
+                <div class="form-double-row">
+                    <div class="form-input-group flex-item">
+                        <label for="reg-pass">Contraseña</label>
+                        <input type="password" id="reg-pass" placeholder="Mínimo 8 caracteres">
+                        <span class="field-error-msg" id="err-rp">Mínimo 8 caracteres.</span>
+                    </div>
+                    <div class="form-input-group flex-item">
+                        <label for="reg-pass2">Confirmar contraseña</label>
+                        <input type="password" id="reg-pass2" placeholder="Repite tu contraseña">
+                        <span class="field-error-msg" id="err-rp2">Las contraseñas no coinciden.</span>
+                    </div>
+                </div>
+                <div id="extra-reciclador" class="extra-fields-section hidden">
+                    <div class="form-input-group">
+                        <label for="reg-rec-code">Código de Reciclador</label>
+                        <input type="text" id="reg-rec-code" placeholder="Ej. REC-2026-X">
+                    </div>
+                    <div class="form-double-row">
+                        <div class="form-input-group flex-item">
+                            <label for="reg-district">Distrito de Cobertura</label>
+                            <select id="reg-district">
+                                <option value="">Selecciona...</option>
+                                <option>Lima Centro</option><option>Miraflores</option>
+                                <option>Los Olivos</option><option>La Molina</option>
+                                <option>San Borja</option><option>Surco</option>
+                            </select>
+                        </div>
+                        <div class="form-input-group flex-item">
+                            <label for="reg-phone">Celular</label>
+                            <input type="tel" id="reg-phone" placeholder="999888777">
+                        </div>
+                    </div>
+                </div>
+                <div id="extra-admin" class="extra-fields-section hidden">
+                    <div class="form-input-group">
+                        <label for="reg-license">Número de Licencia de Acopio</label>
+                        <input type="text" id="reg-license" placeholder="Ej. LIC-2026-LIMA">
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit-auth" id="btn-reg-txt">Crear Cuenta</button>
+                <p class="auth-switch-text">¿Ya tienes cuenta? <button type="button" id="sw-to-login">Inicia sesión aquí</button></p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="qr-modal-overlay" class="modal-shadow-overlay hidden">
+    <div class="qr-interactive-card">
+        <button class="close-modal-btn" id="close-qr-modal">&times;</button>
+        <h3>Tu Código QR de Validación</h3>
+        <p class="qr-subtitle">Muéstraselo al reciclador cuando recoja tu material</p>
+        <div class="qr-explanation-note">
+            <strong>ℹ️ ¿Para qué sirve este código?</strong>
+            El reciclador lo escanea al recoger tu material. Esto registra automáticamente el peso y tipo de residuo, y transfiere tus ReciPuntos a tu billetera digital al instante, sin papeles ni espera.
+        </div>
+        <div class="qr-render-zone"><div id="qr-code-display"></div></div>
+        <div class="qr-metadata">TOKEN ID: <span id="qr-random-token">---</span></div>
+        <button class="btn-refresh-qr" id="btn-regenerate-qr">Generar Nuevo QR</button>
+    </div>
+</div>
+
+<div id="recovery-modal" class="modal-shadow-overlay hidden">
+    <div class="recovery-card">
+        <button class="close-modal-btn" onclick="closeModal('recovery-modal')">&times;</button>
+        <h3>Recuperar tu cuenta</h3>
+        <p>Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.</p>
+        <div class="form-input-group">
+            <label for="recovery-email">Correo electrónico</label>
+            <input type="email" id="recovery-email" placeholder="nombre@correo.com">
+        </div>
+        <button class="btn-recovery-send" id="btn-send-recovery">Enviar enlace de recuperación</button>
+        <div class="success-msg" id="recovery-success">✅ Enlace enviado. Revisa tu bandeja (y la carpeta de spam).</div>
+    </div>
+</div>
+
+<div id="modal-contacto" class="modal-shadow-overlay hidden">
+    <div class="page-modal-container">
+        <button class="close-modal-btn" onclick="closeModal('modal-contacto')">&times;</button>
+        <h2>📬 Contáctanos</h2>
+        <p>¿Tienes dudas, sugerencias o quieres unirte a la red? Te respondemos en menos de 48 horas hábiles.</p>
+        <div class="contact-form-inner" id="contact-form-fields">
+            <input type="text" id="c-name" placeholder="Tu nombre completo">
+            <input type="email" id="c-email" placeholder="Tu correo electrónico">
+            <input type="text" id="c-subject" placeholder="Asunto">
+            <textarea id="c-msg" placeholder="Cuéntanos en qué podemos ayudarte..."></textarea>
+            <button class="btn-contact-send" id="btn-send-contact">Enviar mensaje</button>
+        </div>
+        <div class="contact-success-box" id="contact-success">
+            ✅ ¡Mensaje enviado con éxito! Te contactaremos pronto.
+        </div>
+        <h4>También puedes escribirnos a:</h4>
+        <p>📧 contacto@recirculalima.pe</p>
+        <p>📍 Lima, Perú — Atención lunes a viernes, 9am–6pm</p>
+    </div>
+</div>
+
+<div id="modal-privacidad" class="modal-shadow-overlay hidden">
+    <div class="page-modal-container">
+        <button class="close-modal-btn" onclick="closeModal('modal-privacidad')">&times;</button>
+        <h2>🔒 Política de Privacidad</h2>
+        <p><em>Última actualización: enero 2026</em></p>
+        <h4>1. Datos que recopilamos</h4>
+        <p>Recopilamos nombre, DNI, correo electrónico, ubicación aproximada y datos de actividad de reciclaje para proveer el servicio y acreditar los puntos obtenidos.</p>
+        <h4>2. Uso de la información</h4>
+        <p>Usamos tus datos exclusivamente para operar la plataforma, calcular tus ReciPuntos y conectarte con recicladores verificados. No vendemos ni compartimos tus datos con terceros con fines comerciales.</p>
+        <h4>3. Seguridad</h4>
+        <p>Toda la información se almacena con cifrado y cumple la Ley Peruana de Protección de Datos Personales (Ley 29733).</p>
+        <h4>4. Tus derechos</h4>
+        <p>Puedes solicitar la eliminación de tu cuenta y datos escribiendo a <strong>privacidad@recirculalima.pe</strong>.</p>
+    </div>
+</div>
+
+<div id="modal-terminos" class="modal-shadow-overlay hidden">
+    <div class="page-modal-container">
+        <button class="close-modal-btn" onclick="closeModal('modal-terminos')">&times;</button>
+        <h2>📄 Términos de Uso</h2>
+        <h4>1. Uso del servicio</h4>
+        <p>RecirculaLima es una plataforma gratuita para ciudadanos que deseen segregar sus residuos y conectarse con recicladores formalizados. Queda prohibido el uso para fines fraudulentos.</p>
+        <h4>2. ReciPuntos</h4>
+        <p>Los ReciPuntos no tienen valor monetario directo. Son un beneficio de RecirculaLima para incentivar el reciclaje y pueden ser modificados según la política del programa.</p>
+        <h4>3. Responsabilidades</h4>
+        <p>RecirculaLima facilita la conexión entre ciudadanos y recicladores pero no se hace responsable por el comportamiento de terceros.</p>
+        <h4>4. Modificaciones</h4>
+        <p>Nos reservamos el derecho de actualizar estos términos notificando los cambios por correo electrónico registrado.</p>
+    </div>
+</div>
+
+<div id="modal-recicladores" class="modal-shadow-overlay hidden">
+    <div class="map-modal-card">
+        <button class="close-modal-btn" onclick="closeModal('modal-recicladores')">&times;</button>
+        <h3>📍 Recicladores cercanos a ti</h3>
+        <p>Operadores verificados a menos de 500m de tu ubicación con horarios confirmados.</p>
+        <div class="recycler-list">
+            <div class="recycler-item" onclick="showToast('✅ Solicitud enviada a Carlos M. Te confirmará en breve.','success')">
+                <div class="recycler-avatar">♻️</div>
+                <div class="recycler-info">
+                    <h4>Carlos Mendoza</h4>
+                    <p>🗓️ Hoy 2pm–5pm &nbsp;•&nbsp; 320m de distancia</p>
+                    <span class="recycler-badge">✅ Verificado</span>
+                </div>
+                <button class="btn-contact-recycler">Contactar</button>
+            </div>
+            <div class="recycler-item" onclick="showToast('✅ Solicitud enviada a Rosa C. Te confirmará en breve.','success')">
+                <div class="recycler-avatar">🌿</div>
+                <div class="recycler-info">
+                    <h4>Rosa Castillo</h4>
+                    <p>🗓️ Hoy 3pm–6pm &nbsp;•&nbsp; 480m de distancia</p>
+                    <span class="recycler-badge">✅ Verificada</span>
+                </div>
+                <button class="btn-contact-recycler">Contactar</button>
+            </div>
+            <div class="recycler-item" onclick="showToast('✅ Solicitud enviada a Evans S. Te confirmará en breve.','success')">
+                <div class="recycler-avatar">🚛</div>
+                <div class="recycler-info">
+                    <h4>Evans Soto</h4>
+                    <p>🗓️ Mañana 8am–11am &nbsp;•&nbsp; 490m de distancia</p>
+                    <span class="recycler-badge">✅ Verificado</span>
+                </div>
+                <button class="btn-contact-recycler">Contactar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-descuentos" class="modal-shadow-overlay hidden">
+    <div class="discount-modal-card">
+        <button class="close-modal-btn" onclick="closeModal('modal-descuentos')">&times;</button>
+        <h3>🏪 Red Local de Descuentos</h3>
+        <p>Canjea tus ReciPuntos en estos establecimientos socios cerca de tu barrio.</p>
+        <div class="discount-list">
+            <div class="discount-item">
+                <div class="discount-icon">🍞</div>
+                <div class="discount-info"><h4>Bodega "La Esquina" — Surco</h4><p>10% descuento en compras mayores a S/. 20</p></div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+                    <span class="discount-pts">150 pts</span>
+                    <button class="btn-canjear" onclick="showToast('🎉 ¡Cupón generado! Muéstralo en la bodega.','success')">Canjear</button>
+                </div>
+            </div>
+            <div class="discount-item">
+                <div class="discount-icon">💊</div>
+                <div class="discount-info"><h4>Farmacia BienSalud — Miraflores</h4><p>S/. 5 de descuento en cualquier compra</p></div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+                    <span class="discount-pts">200 pts</span>
+                    <button class="btn-canjear" onclick="showToast('🎉 ¡Cupón generado! Muéstralo en la farmacia.','success')">Canjear</button>
+                </div>
+            </div>
+            <div class="discount-item">
+                <div class="discount-icon">🍽️</div>
+                <div class="discount-info"><h4>Restaurante "El Verde" — Los Olivos</h4><p>Menú gratis en tu próxima visita</p></div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+                    <span class="discount-pts">300 pts</span>
+                    <button class="btn-canjear" onclick="showToast('🎉 ¡Cupón generado! Muéstralo en el restaurante.','success')">Canjear</button>
+                </div>
+            </div>
+            <div class="discount-item">
+                <div class="discount-icon">☕</div>
+                <div class="discount-info"><h4>Café "Recicla & Toma" — San Borja</h4><p>Café gratis por cada 2 kg reciclados</p></div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+                    <span class="discount-pts">80 pts</span>
+                    <button class="btn-canjear" onclick="showToast('🎉 ¡Cupón generado! Muéstralo en el café.','success')">Canjear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-horarios" class="modal-shadow-overlay hidden">
+    <div class="horario-modal-card">
+        <button class="close-modal-btn" onclick="closeModal('modal-horarios')">&times;</button>
+        <h3>🗓️ Horarios de recicladores verificados</h3>
+        <p>Próximas visitas confirmadas en tu zona (Surco – Lima Centro).</p>
+        <div class="horario-list">
+            <div class="horario-item">
+                <div><div class="dia">Hoy — Lunes 20</div><div class="hora">Carlos M. &nbsp;•&nbsp; 2:00pm – 5:00pm</div></div>
+                <span class="estado disponible">Disponible</span>
+            </div>
+            <div class="horario-item">
+                <div><div class="dia">Hoy — Lunes 20</div><div class="hora">Rosa C. &nbsp;•&nbsp; 3:00pm – 6:00pm</div></div>
+                <span class="estado disponible">Disponible</span>
+            </div>
+            <div class="horario-item">
+                <div><div class="dia">Martes 21</div><div class="hora">Evans S. &nbsp;•&nbsp; 8:00am – 11:00am</div></div>
+                <span class="estado disponible">Disponible</span>
+            </div>
+            <div class="horario-item">
+                <div><div class="dia">Martes 21</div><div class="hora">Carlos M. &nbsp;•&nbsp; 1:00pm – 4:00pm</div></div>
+                <span class="estado lleno">Lleno</span>
+            </div>
+            <div class="horario-item">
+                <div><div class="dia">Miércoles 22</div><div class="hora">Rosa C. &nbsp;•&nbsp; 9:00am – 12:00pm</div></div>
+                <span class="estado disponible">Disponible</span>
+            </div>
+        </div>
+        <button class="btn-submit-auth" style="margin-top:16px;" onclick="closeModal('modal-horarios');openModal('modal-recicladores')">Contactar un reciclador →</button>
+    </div>
+</div>
+
+<div id="modal-navegar" class="modal-shadow-overlay hidden">
+    <div class="nav-modal-card">
+        <button class="close-modal-btn" onclick="closeModal('modal-navegar')">&times;</button>
+        <h3>🗺️ Ruta activa — Evans S.</h3>
+        <p>Parada 2 de 3 en progreso. Distancia total estimada: 1.2 km.</p>
+        <div class="route-steps">
+            <div class="route-step">
+                <div class="step-dot" style="background:#94A3B8;">✓</div>
+                <div class="step-info"><h4>Av. Los Próceres 340 — Completada</h4><p>María G. • Plástico • 2 kg recolectados</p></div>
+            </div>
+            <div class="route-step">
+                <div class="step-dot current">2</div>
+                <div class="step-info"><h4>Jr. Libertad 120 — En camino</h4><p>Rosa C. • Papel • 3 kg est. • 420m</p></div>
+            </div>
+            <div class="route-step">
+                <div class="step-dot" style="background:#E2E8F0;color:#94A3B8;">3</div>
+                <div class="step-info"><h4>Ca. Los Pinos 55 — Pendiente</h4><p>Juan A. • Cartón • 1.5 kg est. • 380m</p></div>
+            </div>
+        </div>
+        <button class="btn-iniciar-nav" onclick="showToast('🗺️ Navegación iniciada hacia Jr. Libertad 120','info');closeModal('modal-navegar')">Iniciar navegación →</button>
+    </div>
+</div>
+
+<div id="modal-store" class="modal-shadow-overlay hidden">
+    <div class="store-modal-card">
+        <button class="close-modal-btn" onclick="closeModal('modal-store')">&times;</button>
+        <h3 id="store-title">Descargar RecirculaLima</h3>
+        <p id="store-desc">Elige cómo continuar con la descarga de la app.</p>
+        <div class="store-options">
+            <button class="store-btn-opt" id="store-primary-btn">📲 Ir a la tienda oficial</button>
+            <button class="store-btn-opt secondary" onclick="showToast('📧 Te enviaremos el enlace por correo.','info');closeModal('modal-store')">📧 Enviarme el enlace por correo</button>
+            <button class="store-btn-opt secondary" onclick="showToast('📋 Enlace copiado al portapapeles.','success');closeModal('modal-store')">🔗 Copiar enlace de descarga</button>
+        </div>
+    </div>
+</div>
+
+<script>
+/* ===== UTILIDADES ===== */
+function openModal(id){ document.getElementById(id).classList.remove('hidden'); }
+function closeModal(id){ document.getElementById(id).classList.add('hidden'); }
+function scrollToTop(){ window.scrollTo({top:0,behavior:'smooth'}); }
+
+function showToast(msg, type='info'){
+    const t=document.getElementById('toast-msg');
+    t.textContent=msg;
+    t.className='toast '+type+' show';
+    clearTimeout(t._timer);
+    t._timer=setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+/* ===== HAMBURGER ===== */
+const hamburgerBtn=document.getElementById('hamburger-btn');
+hamburgerBtn.addEventListener('click',()=>{
+    hamburgerBtn.classList.toggle('open');
+    document.getElementById('mobile-nav-drawer').classList.toggle('open');
+});
+function closeMobileNav(){
+    hamburgerBtn.classList.remove('open');
+    document.getElementById('mobile-nav-drawer').classList.remove('open');
+}
+function openAuthModal(mode){ openModal('auth-system-overlay'); setMode(mode); }
+
+/* ===== NAV ACTIVE LINK ===== */
+const sections=document.querySelectorAll('section[id]');
+window.addEventListener('scroll',()=>{
+    let current='';
+    sections.forEach(s=>{ if(window.scrollY>=s.offsetTop-120) current=s.id; });
+    document.querySelectorAll('.nav-links a').forEach(a=>{
+        a.classList.toggle('active-link', a.getAttribute('href')==='#'+current);
+    });
+});
+
+/* ===== AUTH MODAL ===== */
+const roleTabs=document.querySelectorAll('.tab-selector-item');
+let currentMode='login', currentRole='ciudadano';
+const roleConfig={
+    ciudadano:{ title:'Acceso Ciudadano', loginDesc:'Ingresa tus credenciales para ver tus ReciPuntos acumulados.', regDesc:'Crea tu cuenta para comenzar a reciclar y ganar ReciPuntos.', loginBtn:'Iniciar Sesión como Ciudadano', regBtn:'Crear Cuenta Ciudadana' },
+    reciclador:{ title:'Acceso Reciclador', loginDesc:'Accede a tu panel de rutas, metas y estadísticas de recolección.', regDesc:'Regístrate como operador ambiental verificado para trazar rutas.', loginBtn:'Iniciar Sesión como Reciclador', regBtn:'Registrarse como Reciclador' },
+    administrador:{ title:'Control de Planta — Acopio', loginDesc:'Panel exclusivo para administradores de centros de acopio.', regDesc:'Registra tu centro de acopio y gestiona el flujo de materiales.', loginBtn:'Ingresar — Administrador', regBtn:'Registrar Centro de Acopio' }
+};
+
+function setMode(mode){
+    currentMode=mode;
+    const isL=mode==='login';
+    document.getElementById('tab-login').classList.toggle('active',isL);
+    document.getElementById('tab-register').classList.toggle('active',!isL);
+    document.getElementById('form-login').classList.toggle('hidden',!isL);
+    document.getElementById('form-register').classList.toggle('hidden',isL);
+    updateCtx();
+}
+function updateCtx(){
+    const cfg=roleConfig[currentRole];
+    document.getElementById('ctx-title').textContent=cfg.title;
+    document.getElementById('ctx-desc').textContent=currentMode==='login'?cfg.loginDesc:cfg.regDesc;
+    document.getElementById('btn-login-txt').textContent=cfg.loginBtn;
+    document.getElementById('btn-reg-txt').textContent=cfg.regBtn;
+    const isRec=currentRole==='reciclador', isAdm=currentRole==='administrador';
+    document.getElementById('extra-reciclador').classList.toggle('hidden',!isRec);
+    document.getElementById('extra-admin').classList.toggle('hidden',!isAdm);
+    if(currentMode==='register') document.getElementById('dni-wrap').style.display=isAdm?'none':'flex';
+}
+
+document.getElementById('tab-login').addEventListener('click',()=>setMode('login'));
+document.getElementById('tab-register').addEventListener('click',()=>setMode('register'));
+document.getElementById('sw-to-reg').addEventListener('click',()=>setMode('register'));
+document.getElementById('sw-to-login').addEventListener('click',()=>setMode('login'));
+
+roleTabs.forEach(t=>t.addEventListener('click',()=>{
+    roleTabs.forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    currentRole=t.getAttribute('data-role');
+    updateCtx();
+}));
+
+document.getElementById('open-login-btn').addEventListener('click',()=>{ openModal('auth-system-overlay'); setMode('login'); });
+document.getElementById('open-register-btn').addEventListener('click',()=>{ openModal('auth-system-overlay'); setMode('register'); });
+document.getElementById('close-auth-modal').addEventListener('click',()=>closeModal('auth-system-overlay'));
+document.getElementById('auth-system-overlay').addEventListener('click',e=>{ if(e.target.id==='auth-system-overlay') closeModal('auth-system-overlay'); });
+
+function openRecyclerReg(){
+    openModal('auth-system-overlay'); setMode('register');
+    roleTabs.forEach(t=>t.classList.toggle('active',t.getAttribute('data-role')==='reciclador'));
+    currentRole='reciclador'; updateCtx();
+}
+// recycler-register-link eliminado del CTA
+document.getElementById('footer-recicladores-link').addEventListener('click',e=>{ e.preventDefault(); openRecyclerReg(); });
+
+/* DNI validación en tiempo real */
+const dniInput=document.getElementById('reg-dni');
+dniInput.addEventListener('input',()=>{
+    dniInput.value=dniInput.value.replace(/\D/g,'').slice(0,8);
+    const bad=dniInput.value.length>0&&dniInput.value.length!==8;
+    dniInput.classList.toggle('error-field',bad);
+    dniInput.classList.toggle('ok-field',dniInput.value.length===8);
+    document.getElementById('err-rd').classList.toggle('visible',bad);
+});
+
+/* LOGIN */
+document.getElementById('form-login').addEventListener('submit',e=>{
+    e.preventDefault();
+    const email=document.getElementById('login-email').value.trim();
+    const pass=document.getElementById('login-pass').value;
+    let ok=true;
+    const setE=(id,fid,show)=>{ document.getElementById(id).classList.toggle('visible',show); document.getElementById(fid).classList.toggle('error-field',show); };
+    const badE=!email||!/\S+@\S+\.\S+/.test(email);
+    setE('err-le','login-email',badE); if(badE) ok=false;
+    setE('err-lp','login-pass',!pass); if(!pass) ok=false;
+    if(!ok) return;
+    showSession(email.split('@')[0], currentRole);
+    closeModal('auth-system-overlay');
+    showToast('👋 ¡Bienvenido/a de nuevo!','success');
+});
+
+/* REGISTRO */
+document.getElementById('form-register').addEventListener('submit',e=>{
+    e.preventDefault();
+    const name=document.getElementById('reg-name').value.trim();
+    const dni=document.getElementById('reg-dni').value.trim();
+    const email=document.getElementById('reg-email').value.trim();
+    const pass=document.getElementById('reg-pass').value;
+    const pass2=document.getElementById('reg-pass2').value;
+    let ok=true;
+    const setE=(id,fid,show)=>{ document.getElementById(id).classList.toggle('visible',show); document.getElementById(fid).classList.toggle('error-field',show); };
+    setE('err-rn','reg-name',!name); if(!name) ok=false;
+    const badD=currentRole!=='administrador'&&(dni.length!==8||!/^\d{8}$/.test(dni));
+    setE('err-rd','reg-dni',badD); if(badD) ok=false;
+    const badE=!/\S+@\S+\.\S+/.test(email);
+    setE('err-re','reg-email',badE); if(badE) ok=false;
+    setE('err-rp','reg-pass',pass.length<8); if(pass.length<8) ok=false;
+    setE('err-rp2','reg-pass2',pass!==pass2); if(pass!==pass2) ok=false;
+    if(!ok) return;
+    showSession(name.split(' ')[0], currentRole);
+    closeModal('auth-system-overlay');
+    showToast(`✅ ¡Bienvenido/a, ${name.split(' ')[0]}! Tu cuenta ha sido creada.`,'success');
+});
+
+function showSession(name, role){
+    document.getElementById('auth-btn-group').classList.add('hidden');
+    document.getElementById('session-active-area').classList.remove('hidden');
+    document.getElementById('session-user-info').textContent=`🟢 ${name}`;
+    // Ocultar landing y todos los dashboards
+    document.getElementById('landing-page').classList.add('hidden');
+    ['dash-ciudadano','dash-reciclador','dash-admin'].forEach(d=>{
+        const el=document.getElementById(d);
+        el.classList.add('hidden');
+    });
+    // Inicializar todos los dash-tabs de los 3 dashboards con display:none
+    document.querySelectorAll('.dash-tab').forEach(t=>{ t.style.display='none'; t.classList.remove('active'); });
+    // Activar el primer tab de cada dashboard (por si se reutiliza)
+    ['dc-home','dr-home','da-home'].forEach(id=>{ const t=document.getElementById(id); if(t){ t.style.display='block'; t.classList.add('active'); } });
+    // Mostrar el dashboard correcto y actualizar nombre
+    if(role==='ciudadano'){
+        document.getElementById('dash-ciudadano').classList.remove('hidden');
+        document.getElementById('dash-ciudadano-name').textContent=name;
+    } else if(role==='reciclador'){
+        document.getElementById('dash-reciclador').classList.remove('hidden');
+        document.getElementById('dash-reciclador-name').textContent=name;
+        setTimeout(genQRReciclador, 300);
+    } else if(role==='administrador'){
+        document.getElementById('dash-admin').classList.remove('hidden');
+        document.getElementById('dash-admin-name').textContent=name;
+    }
+    window.scrollTo({top:0,behavior:'smooth'});
+}
+document.getElementById('action-logout-trigger').addEventListener('click',()=>{
+    document.getElementById('session-active-area').classList.add('hidden');
+    document.getElementById('auth-btn-group').classList.remove('hidden');
+    document.getElementById('dash-ciudadano').classList.add('hidden');
+    document.getElementById('dash-reciclador').classList.add('hidden');
+    document.getElementById('dash-admin').classList.add('hidden');
+    document.getElementById('landing-page').classList.remove('hidden');
+    showToast('👋 Sesión cerrada correctamente.','info');
+    window.scrollTo({top:0,behavior:'smooth'});
+});
+
+/* RECUPERAR CONTRASEÑA */
+document.getElementById('btn-forgot').addEventListener('click',()=>{ closeModal('auth-system-overlay'); openModal('recovery-modal'); });
+document.getElementById('btn-send-recovery').addEventListener('click',()=>{
+    const email=document.getElementById('recovery-email').value.trim();
+    if(!email||!/\S+@\S+\.\S+/.test(email)){ document.getElementById('recovery-email').classList.add('error-field'); return; }
+    document.getElementById('recovery-email').classList.remove('error-field');
+    document.getElementById('recovery-success').classList.add('show');
+    document.getElementById('btn-send-recovery').disabled=true;
+    setTimeout(()=>closeModal('recovery-modal'),3200);
+});
+document.getElementById('recovery-modal').addEventListener('click',e=>{ if(e.target.id==='recovery-modal') closeModal('recovery-modal'); });
+
+/* QR MODAL */
+let qrObj=null;
+function genQR(){
+    const el=document.getElementById('qr-code-display');
+    el.innerHTML=''; qrObj=null;
+    const tok='LIMA-'+Math.floor(Math.random()*900000+100000);
+    document.getElementById('qr-random-token').textContent=tok;
+    qrObj=new QRCode(el,{text:'recirculalima://validar/'+tok,width:150,height:150,colorDark:'#34472C',colorLight:'#ffffff'});
+}
+document.getElementById('trigger-qr-generator').addEventListener('click',()=>{ openModal('qr-modal-overlay'); genQR(); });
+document.getElementById('close-qr-modal').addEventListener('click',()=>closeModal('qr-modal-overlay'));
+document.getElementById('btn-regenerate-qr').addEventListener('click',()=>{ genQR(); showToast('🔄 Nuevo QR generado','info'); });
+document.getElementById('qr-modal-overlay').addEventListener('click',e=>{ if(e.target.id==='qr-modal-overlay') closeModal('qr-modal-overlay'); });
+
+/* FOOTER MODALS */
+document.getElementById('footer-contacto').addEventListener('click',e=>{ e.preventDefault(); openModal('modal-contacto'); });
+document.getElementById('footer-privacidad').addEventListener('click',e=>{ e.preventDefault(); openModal('modal-privacidad'); });
+document.getElementById('footer-terminos').addEventListener('click',e=>{ e.preventDefault(); openModal('modal-terminos'); });
+['modal-contacto','modal-privacidad','modal-terminos'].forEach(id=>{
+    document.getElementById(id).addEventListener('click',e=>{ if(e.target.id===id) closeModal(id); });
+});
+
+/* CONTACTO con validación */
+document.getElementById('btn-send-contact').addEventListener('click',()=>{
+    const name=document.getElementById('c-name').value.trim();
+    const email=document.getElementById('c-email').value.trim();
+    const subject=document.getElementById('c-subject').value.trim();
+    const msg=document.getElementById('c-msg').value.trim();
+    let ok=true;
+    [['c-name',name],['c-subject',subject],['c-msg',msg]].forEach(([id,val])=>{
+        document.getElementById(id).classList.toggle('error-field',!val);
+        if(!val) ok=false;
+    });
+    const badE=!/\S+@\S+\.\S+/.test(email);
+    document.getElementById('c-email').classList.toggle('error-field',badE);
+    if(badE) ok=false;
+    if(!ok){ showToast('⚠️ Por favor completa todos los campos correctamente.','warning'); return; }
+    document.getElementById('contact-form-fields').style.display='none';
+    document.getElementById('contact-success').classList.add('show');
+    showToast('✅ ¡Mensaje enviado!','success');
+});
+
+/* RECICLADORES CERCANOS */
+document.getElementById('btn-ver-recicladores').addEventListener('click',()=>openModal('modal-recicladores'));
+document.getElementById('modal-recicladores').addEventListener('click',e=>{ if(e.target.id==='modal-recicladores') closeModal('modal-recicladores'); });
+
+/* RED LOCAL (DESCUENTOS) */
+document.getElementById('btn-red-local').addEventListener('click',()=>openModal('modal-descuentos'));
+document.getElementById('modal-descuentos').addEventListener('click',e=>{ if(e.target.id==='modal-descuentos') closeModal('modal-descuentos'); });
+
+/* HORARIOS */
+document.getElementById('btn-ver-horarios').addEventListener('click',()=>openModal('modal-horarios'));
+document.getElementById('modal-horarios').addEventListener('click',e=>{ if(e.target.id==='modal-horarios') closeModal('modal-horarios'); });
+
+/* NAVEGAR RUTA */
+document.getElementById('btn-navegar-parada').addEventListener('click',()=>openModal('modal-navegar'));
+document.getElementById('modal-navegar').addEventListener('click',e=>{ if(e.target.id==='modal-navegar') closeModal('modal-navegar'); });
+
+/* DESCARGA DE APP */
+function openStoreModal(platform){
+    const isIOS=platform==='ios';
+    document.getElementById('store-title').textContent=isIOS?'Descargar en App Store':'Descargar en Google Play';
+    document.getElementById('store-desc').textContent=isIOS
+        ?'RecirculaLima está disponible para iPhone y iPad con iOS 14 o superior.'
+        :'RecirculaLima está disponible para Android 8.0 o superior.';
+    document.getElementById('store-primary-btn').textContent=isIOS?'🍎 Ir a App Store':'🤖 Ir a Google Play';
+    document.getElementById('store-primary-btn').onclick=()=>{
+        showToast(isIOS?'🍎 Redirigiendo a App Store...':'🤖 Redirigiendo a Google Play...','info');
+        setTimeout(()=>closeModal('modal-store'),1200);
+    };
+    openModal('modal-store');
+}
+document.getElementById('btn-ios').addEventListener('click',()=>openStoreModal('ios'));
+document.getElementById('btn-android').addEventListener('click',()=>openStoreModal('android'));
+// botones descarga CTA eliminados
+document.getElementById('modal-store').addEventListener('click',e=>{ if(e.target.id==='modal-store') closeModal('modal-store'); });
+
+/* INIT */
+updateCtx();
+
+/* ===== DASHBOARDS ===== */
+function dashTab(e, tabId){
+    if(e && e.preventDefault) e.preventDefault();
+    const link = e && e.currentTarget ? e.currentTarget : e;
+    const wrapper = link.closest('.dash-wrapper');
+    // Actualizar links activos
+    wrapper.querySelectorAll('.dash-link').forEach(l => l.classList.remove('active'));
+    link.classList.add('active');
+    // Mostrar solo el tab correcto
+    wrapper.querySelectorAll('.dash-tab').forEach(t => {
+        t.style.display = 'none';
+        t.classList.remove('active');
+    });
+    const tab = document.getElementById(tabId);
+    if(tab){
+        tab.style.display = 'block';
+        tab.classList.add('active');
+    }
+    // Generar QR del reciclador al entrar a esa sección
+    if(tabId === 'dr-qr'){
+        setTimeout(()=>{ if(document.getElementById('dr-qr-display').children.length===0) genQRReciclador(); }, 100);
+    }
+}
+function toggleChip(el){ el.classList.toggle('active'); }
+
+// Fechas en dashboards
+function setDashDates(){
+    const d=new Date();
+    const str=d.toLocaleDateString('es-PE',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+    ['dash-date-c','dash-date-r','dash-date-a'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=str; });
+}
+setDashDates();
+
+// Logout desde botones dentro de los dashboards
+['action-logout-trigger2','action-logout-trigger3','action-logout-trigger4'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.addEventListener('click',()=>{
+        document.getElementById('session-active-area').classList.add('hidden');
+        document.getElementById('auth-btn-group').classList.remove('hidden');
+        ['dash-ciudadano','dash-reciclador','dash-admin'].forEach(d=>document.getElementById(d).classList.add('hidden'));
+        document.getElementById('landing-page').classList.remove('hidden');
+        showToast('👋 Sesión cerrada correctamente.','info');
+        window.scrollTo({top:0,behavior:'smooth'});
+    });
+});
+
+// QR del reciclador en dashboard
+function genQRReciclador(){
+    const el=document.getElementById('dr-qr-display');
+    if(!el) return;
+    el.innerHTML='';
+    const tok='REC-'+Math.floor(Math.random()*900000+100000);
+    const tkEl=document.getElementById('dr-qr-token');
+    if(tkEl) tkEl.textContent=tok;
+    new QRCode(el,{text:'recirculalima://reciclador/'+tok,width:140,height:140,colorDark:'#34472C',colorLight:'#ffffff'});
+}
+
+// Solicitar recojo
+function solicitarRecojo(){
+    const dir=document.getElementById('sol-dir').value.trim();
+    if(!dir){ document.getElementById('sol-dir').classList.add('error-field'); showToast('⚠️ Completa los campos obligatorios','warning'); return; }
+    document.getElementById('sol-dir').classList.remove('error-field');
+    showToast('✅ ¡Solicitud publicada! Los recicladores de tu zona ya pueden verla.','success');
+    document.getElementById('sol-dir').value='';
+}
+
+// Observer para actualizar nombres en dashboards cuando se muestran
+const dashObserver=new MutationObserver(()=>{
+    const sInfo=document.getElementById('session-user-info');
+    if(!sInfo) return;
+    const uname=sInfo.textContent.replace('🟢 ','');
+    const dr=document.getElementById('dash-reciclador');
+    if(dr&&!dr.classList.contains('hidden')){
+        if(dr.querySelector('#dr-qr-display')&&dr.querySelector('#dr-qr-display').children.length===0) genQRReciclador();
+        ['dr-qr-name','dr-perfil-name'].forEach(id=>{ const e=document.getElementById(id); if(e&&!e.textContent) e.textContent=uname; });
+    }
+    const dc=document.getElementById('dash-ciudadano');
+    if(dc&&!dc.classList.contains('hidden')){
+        const e=document.getElementById('dc-perfil-name'); if(e&&!e.textContent) e.textContent=uname;
+    }
+});
+dashObserver.observe(document.body,{attributes:true,subtree:true,attributeFilter:['class']});
+</script>
+</body>
+</html>
